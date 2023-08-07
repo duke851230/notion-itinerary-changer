@@ -13,9 +13,13 @@ from openpyxl.styles import (
 )
 
 
+def initialize_sheet(sheet: Worksheet) -> None:
+    sheet.sheet_format.defaultColWidth = 20
+    sheet.sheet_format.defaultRowHeight = 35
+    sheet.column_dimensions["A"].width = 10
+
 def set_timeline_in_sheet(sheet: Worksheet, timeline_data: dict) -> None:
     for val, row_id in timeline_data.items():
-        sheet.row_dimensions[row_id].height = 40
         c = sheet.cell(
             row = row_id, 
             column = column_index_from_string("A"),

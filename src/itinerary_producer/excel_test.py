@@ -13,6 +13,7 @@ from openpyxl import Workbook
 
 from configer import configer
 from helpers.excel.sheet import (
+    initialize_sheet,
     set_timeline_in_sheet,
 )
 from helpers.excel.utils import (
@@ -24,6 +25,8 @@ file_path: str = os.path.join(configer.excel.EXCEL_BASIC_DIR, "test.xlsx")
 
 wb: Workbook = Workbook()
 sheet: Worksheet = wb.active
+
+initialize_sheet(sheet=sheet)
 
 timeline: dict = get_timeline_data(
     start_at=datetime(9999, 1, 1, 8, 30),
