@@ -4,3 +4,7 @@ __pycache__
 
 # backup code
 bk_*.py
+
+
+# config
+*.toml
