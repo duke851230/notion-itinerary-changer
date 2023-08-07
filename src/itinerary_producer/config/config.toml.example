@@ -1,0 +1,6 @@
+[trello]
+TOKEN = ""
+DATABASE_ID = ""
+
+[excel]
+EXCEL_BASIC_DIR = "/xxx"

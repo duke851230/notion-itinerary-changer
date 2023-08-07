@@ -1,6 +1,0 @@
-[trello]
-TOKEN = "secret_o3SZti7prXvBDopGWea9spqkDn6iJNmfXmYacuqSkyo"
-DATABASE_ID = "0e598f7e43d046a6be041f86b2443dd4"
-
-[excel]
-EXCEL_BASIC_DIR = "/home/duke/Desktop/my_trello_test"
