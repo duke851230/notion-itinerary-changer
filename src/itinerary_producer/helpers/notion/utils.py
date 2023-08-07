@@ -1,6 +1,6 @@
 from __future__ import annotations
 from typing import (
-    TYPE_CHECKING, Callable, Dict,
+    TYPE_CHECKING, Callable, Dict, List,
 )
 
 if TYPE_CHECKING:
@@ -35,5 +35,24 @@ def get_daily_card_info() -> dict:
         
         notion_data[day].append(card_info)
 
-    print(notion_data)
-    return notion_data
+    keys = list(notion_data.keys())
+    keys.sort()
+    activities: List[list] = [notion_data[i] for i in keys]
+
+    activities = sort_activities_every_day(activities)
+    print(f"activities: {activities}")
+    return activities
+
+def sort_activities_every_day(activities: List[list]) -> List[list]:
+    SORTED_BY = "start_at"
+
+    sorted_data: List[list] = []
+    for today_activities in activities:
+        sorted_data.append(
+            sorted(
+                today_activities,
+                key=lambda x: x[SORTED_BY]
+            )
+        )
+    
+    return sorted_data

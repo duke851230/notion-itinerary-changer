@@ -6,6 +6,8 @@ from typing import (
 if TYPE_CHECKING:
     pass
 
+from datetime import datetime
+
 from constant.notion import PropertyType
 
 
@@ -18,7 +20,9 @@ def get_rich_text(property_info: dict) -> str:
     return inner_info["text"]["content"]
 
 def get_date(property_info: dict) -> str:
-    return property_info["date"]["start"]
+    datetime_str: str = property_info["date"]["start"]
+    datetime_obj: datetime = datetime.fromisoformat(datetime_str)
+    return datetime_obj.strftime("%H:%M")
 
 
 

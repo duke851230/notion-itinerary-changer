@@ -1,6 +1,6 @@
 from __future__ import annotations
 from typing import (
-    TYPE_CHECKING, 
+    TYPE_CHECKING, List,
 )
 
 if TYPE_CHECKING:
@@ -10,6 +10,11 @@ from openpyxl.worksheet.worksheet import Worksheet
 from openpyxl.utils import column_index_from_string
 from openpyxl.styles import (
     Alignment, PatternFill, Border, Side,
+)
+
+from helpers.excel.utils import (
+    find_next_column_letter,
+    get_timeline_data,
 )
 
 
@@ -26,3 +31,34 @@ def set_timeline_in_sheet(sheet: Worksheet, timeline_data: dict) -> None:
             value = val
         )
         c.alignment = Alignment(horizontal="center", vertical="center", wrap_text=True)  # wrap_text=True 自動換行
+    
+def insert_activities_to_sheet(
+        sheet: Worksheet,
+        activities: List[list],
+        timeline: dict,
+        start_column: str="B"
+    ) -> None:
+
+    current_column: str = start_column
+
+    for today_activities in activities:
+        c = sheet.cell(
+            row=1,
+            column=column_index_from_string(current_column),
+            value=today_activities[0]["day"]
+        )
+
+        for activity in today_activities:
+            start_row_index: int = timeline[activity["start_at"]]
+            end_row_index: int = timeline[activity["end_at"]]
+            sheet.cell(
+                row=start_row_index,
+                column=column_index_from_string(current_column),
+                value=activity["name"]
+            )
+            sheet.merge_cells(f"{current_column}{start_row_index}:{current_column}{end_row_index}")
+
+
+        current_column = find_next_column_letter(current_column)
+
+

@@ -7,6 +7,10 @@ if TYPE_CHECKING:
     pass
 
 from datetime import datetime, timedelta
+from openpyxl.utils import (
+    get_column_letter,
+    column_index_from_string,
+)
 
 
 def get_timeline_data(start_at: datetime, end_at: datetime, start_row_number: int, time_interval: int=30) -> Dict[str, int]:
@@ -21,3 +25,9 @@ def get_timeline_data(start_at: datetime, end_at: datetime, start_row_number: in
         start_at = start_at + timedelta(minutes=time_interval)
     
     return timeline
+
+def find_next_column_letter(current_column_letter: str) -> str:
+    next_column_id: int = column_index_from_string(current_column_letter) + 1
+    next_column_letter: str = get_column_letter(next_column_id)
+
+    return next_column_letter
