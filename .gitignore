@@ -1,0 +1,6 @@
+# pyc file
+__pycache__
+*.pyc
+
+# backup code
+bk_*.py
