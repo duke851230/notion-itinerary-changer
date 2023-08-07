@@ -14,7 +14,7 @@ from openpyxl.styles import (
 
 
 def set_timeline_in_sheet(sheet: Worksheet, timeline_data: dict) -> None:
-    for row_id, val in timeline_data.items():
+    for val, row_id in timeline_data.items():
         sheet.row_dimensions[row_id].height = 40
         c = sheet.cell(
             row = row_id, 
