@@ -1,10 +1,10 @@
 from __future__ import annotations
 from typing import (
-    TYPE_CHECKING, List,
+    TYPE_CHECKING, List, Optional
 )
 
 if TYPE_CHECKING:
-    pass
+    from openpyxl.cell.cell import Cell
 
 from openpyxl.worksheet.worksheet import Worksheet
 from openpyxl.utils import column_index_from_string
@@ -28,24 +28,20 @@ def initialize_sheet(sheet: Worksheet) -> None:
 def set_timeline_in_sheet(sheet: Worksheet, column: str, name: str, name_row_number: int, timeline_data: dict) -> None:
     sheet.column_dimensions[column].width = 10
     
-    header_cell = sheet.cell(
+    header_cell: Cell = sheet.cell(
         row = name_row_number, 
         column = column_index_from_string(column),
         value = name
     )
-    header_cell.alignment = Alignment(horizontal="center", vertical="center", wrap_text=True)  # wrap_text=True 自動換行
-    header_cell.fill = PatternFill("solid", fgColor=ColorMap.dark_gray.value)
-    header_cell.border = get_default_border()
+    set_general_format_of_cell(header_cell, font_size=11, fill_color=ColorMap.dark_gray.value)
 
     for val, row_id in timeline_data.items():
-        c = sheet.cell(
+        c: Cell = sheet.cell(
             row = row_id, 
             column = column_index_from_string(column),
             value = val
         )
-        c.alignment = Alignment(horizontal="center", vertical="center", wrap_text=True)  # wrap_text=True 自動換行
-        c.fill = PatternFill("solid", fgColor=ColorMap.gray.value)
-        c.border = get_default_border()
+        set_general_format_of_cell(c, font_size=13, fill_color=ColorMap.gray.value)
     
 def insert_activities_to_sheet(
         sheet: Worksheet,
@@ -57,25 +53,19 @@ def insert_activities_to_sheet(
     current_column: str = start_column
 
     for today_activities in activities:
-        date_cell = sheet.cell(
+        date_cell: Cell = sheet.cell(
             row=1,
             column=column_index_from_string(current_column),
             value=today_activities[0]["start_at"][:10]
         )
-        date_cell.alignment = Alignment(horizontal="center", vertical="center")
-        date_cell.font = Font(size=15)
-        date_cell.fill = PatternFill("solid", fgColor=ColorMap.purple.value)
-        date_cell.border = get_default_border()
+        set_general_format_of_cell(date_cell, font_size=15, fill_color=ColorMap.purple.value)
 
-        header_cell = sheet.cell(
+        header_cell: Cell = sheet.cell(
             row=2,
             column=column_index_from_string(current_column),
             value=today_activities[0]["day"]
         )
-        header_cell.alignment = Alignment(horizontal="center", vertical="center")
-        header_cell.font = Font(size=18)
-        header_cell.fill = PatternFill("solid", fgColor=ColorMap.dark_gray.value)
-        header_cell.border = get_default_border()
+        set_general_format_of_cell(header_cell, font_size=18, fill_color=ColorMap.dark_gray.value)
 
         for activity in today_activities:
             start_time_str: str = get_hour_minute_time(activity["start_at"])
@@ -85,18 +75,18 @@ def insert_activities_to_sheet(
 
             sheet.merge_cells(f"{current_column}{start_row_index}:{current_column}{end_row_index}")
 
-            activity_cell = sheet.cell(
+            activity_cell: Cell = sheet.cell(
                 row=start_row_index,
                 column=column_index_from_string(current_column),
                 value=f'項目：{activity["name"]}\n位置：{activity["place"]}'
             )
-            activity_cell.alignment = Alignment(horizontal="center", vertical="center", wrap_text=True)
-            activity_cell.font = Font(size=12)
-            activity_cell.fill = PatternFill(
-                "solid", fgColor=get_type_color(activity["type"])
-            )
-            activity_cell.border = get_default_border()
+            set_general_format_of_cell(activity_cell, font_size=12, fill_color=get_type_color(activity["type"]))
 
         current_column = find_next_column_letter(current_column)
 
-
+def set_general_format_of_cell(cell: Cell, font_size: int, fill_color: Optional[str]) -> None:
+    cell.alignment = Alignment(horizontal="center", vertical="center", wrap_text=True)
+    cell.font = Font(size=font_size)
+    if fill_color:
+        cell.fill = PatternFill("solid", fgColor=fill_color)
+    cell.border = get_default_border()
