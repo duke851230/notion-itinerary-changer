@@ -9,7 +9,7 @@ if TYPE_CHECKING:
 from openpyxl.worksheet.worksheet import Worksheet
 from openpyxl.utils import column_index_from_string
 from openpyxl.styles import (
-    Alignment, PatternFill, Border, Side,
+    Alignment, Font, PatternFill, Border, Side,
 )
 
 from helpers.excel.utils import (
@@ -42,22 +42,26 @@ def insert_activities_to_sheet(
     current_column: str = start_column
 
     for today_activities in activities:
-        c = sheet.cell(
+        header_cell = sheet.cell(
             row=1,
             column=column_index_from_string(current_column),
             value=today_activities[0]["day"]
         )
+        header_cell.alignment = Alignment(horizontal="center", vertical="center")
+        header_cell.font = Font(size=18)
 
         for activity in today_activities:
             start_row_index: int = timeline[activity["start_at"]]
             end_row_index: int = timeline[activity["end_at"]]
-            sheet.cell(
+            sheet.merge_cells(f"{current_column}{start_row_index}:{current_column}{end_row_index}")
+
+            activity_cell = sheet.cell(
                 row=start_row_index,
                 column=column_index_from_string(current_column),
                 value=activity["name"]
             )
-            sheet.merge_cells(f"{current_column}{start_row_index}:{current_column}{end_row_index}")
-
+            activity_cell.alignment = Alignment(horizontal="center", vertical="center")
+            activity_cell.font = Font(size=14)
 
         current_column = find_next_column_letter(current_column)
 
