@@ -25,11 +25,11 @@ def initialize_sheet(sheet: Worksheet) -> None:
     sheet.sheet_format.defaultColWidth = 20
     sheet.sheet_format.defaultRowHeight = 35
 
-def set_timeline_in_sheet(sheet: Worksheet, column: str, start_row_number: int, name: str, timeline_data: dict) -> None:
+def set_timeline_in_sheet(sheet: Worksheet, column: str, name: str, name_row_number: int, timeline_data: dict) -> None:
     sheet.column_dimensions[column].width = 10
     
     header_cell = sheet.cell(
-        row = start_row_number - 1, 
+        row = name_row_number, 
         column = column_index_from_string(column),
         value = name
     )
@@ -39,7 +39,7 @@ def set_timeline_in_sheet(sheet: Worksheet, column: str, start_row_number: int, 
 
     for val, row_id in timeline_data.items():
         c = sheet.cell(
-            row = start_row_number + row_id, 
+            row = row_id, 
             column = column_index_from_string(column),
             value = val
         )

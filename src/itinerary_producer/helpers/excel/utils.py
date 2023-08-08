@@ -18,10 +18,10 @@ from openpyxl.styles import (
 from constant.excel import ColorMap
 
 
-def get_timeline_data(start_at: datetime, end_at: datetime, time_interval: int=30) -> Tuple[Dict[str, int], Dict[str, int]]:
+def get_timeline_data(start_at: datetime, end_at: datetime, start_row_number=3, time_interval: int=30) -> Tuple[Dict[str, int], Dict[str, int]]:
     pre_timline: Dict[str, int] = {}
     timeline: Dict[str, int] = {}
-    current_id: int = 0
+    current_id: int = start_row_number
 
     while start_at <= end_at:
         pre_time: datetime = start_at - timedelta(minutes=time_interval)

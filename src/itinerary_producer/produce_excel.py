@@ -39,20 +39,21 @@ def produce_schedule_excel(file_path: str) -> None:
     pre_timeline, timeline = get_timeline_data(
         start_at=datetime(9999, 1, 1, 8, 00),
         end_at=datetime(9999, 1, 1, 21, 30),
+        start_row_number=3,
         time_interval=30
     )
     set_timeline_in_sheet(
         sheet=sheet,
         column="A",
-        start_row_number=3,
         name="起始時間",
+        name_row_number=2,
         timeline_data=pre_timeline
     )
     set_timeline_in_sheet(
         sheet=sheet,
         column="B",
-        start_row_number=3,
         name="結束時間",
+        name_row_number=2,
         timeline_data=timeline
     )
 
