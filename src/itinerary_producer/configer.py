@@ -64,7 +64,7 @@ class ExcelConfig(BaseModel, extra="forbid"):
 
 
 class Configer(BaseModel):
-    notion: NotionConfig = initialize_config_model(config_class=NotionConfig, toml_keyword="trello")
+    notion: NotionConfig = initialize_config_model(config_class=NotionConfig, toml_keyword="notion")
     excel: ExcelConfig = initialize_config_model(config_class=ExcelConfig, toml_keyword="excel")
 
 
