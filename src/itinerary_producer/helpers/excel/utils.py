@@ -1,6 +1,6 @@
 from __future__ import annotations
 from typing import (
-    TYPE_CHECKING, Dict,
+    TYPE_CHECKING, Dict, Tuple
 )
 
 if TYPE_CHECKING:
@@ -18,18 +18,23 @@ from openpyxl.styles import (
 from constant.excel import ColorMap
 
 
-def get_timeline_data(start_at: datetime, end_at: datetime, start_row_number: int, time_interval: int=30) -> Dict[str, int]:
+def get_timeline_data(start_at: datetime, end_at: datetime, time_interval: int=30) -> Tuple[Dict[str, int], Dict[str, int]]:
+    pre_timline: Dict[str, int] = {}
     timeline: Dict[str, int] = {}
-    current_id: int = start_row_number
+    current_id: int = 0
 
     while start_at <= end_at:
+        pre_time: datetime = start_at - timedelta(minutes=time_interval)
+        pre_time_str: str = pre_time.strftime("%H:%M")
+        pre_timline[pre_time_str] = current_id
+
         time_str: str = start_at.strftime("%H:%M")
         timeline[time_str] = current_id
 
         current_id += 1
         start_at = start_at + timedelta(minutes=time_interval)
     
-    return timeline
+    return (pre_timline, timeline)
 
 def find_next_column_letter(current_column_letter: str) -> str:
     next_column_id: int = column_index_from_string(current_column_letter) + 1

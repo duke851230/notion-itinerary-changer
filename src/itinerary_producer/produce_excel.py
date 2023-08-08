@@ -36,19 +36,31 @@ def produce_schedule_excel(file_path: str) -> None:
 
     initialize_sheet(sheet=sheet)
 
-    timeline: dict = get_timeline_data(
+    pre_timeline, timeline = get_timeline_data(
         start_at=datetime(9999, 1, 1, 8, 00),
         end_at=datetime(9999, 1, 1, 21, 30),
-        start_row_number=3,
         time_interval=30
     )
-    set_timeline_in_sheet(sheet, timeline)
+    set_timeline_in_sheet(
+        sheet=sheet,
+        column="A",
+        start_row_number=3,
+        name="起始時間",
+        timeline_data=pre_timeline
+    )
+    set_timeline_in_sheet(
+        sheet=sheet,
+        column="B",
+        start_row_number=3,
+        name="結束時間",
+        timeline_data=timeline
+    )
 
     insert_activities_to_sheet(
         sheet=sheet,
         activities=get_daily_activities(),
         timeline=timeline,
-        start_column="B"
+        start_column="C"
     )
 
     wb.save(file_path)
