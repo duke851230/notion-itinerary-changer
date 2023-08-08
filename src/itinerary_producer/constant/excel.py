@@ -17,4 +17,5 @@ class ColorMap(Enum):
     green = "00CCFFCC"
     orange = "00FFCC99"
     pink = "00FF99CC"
+    gray = "DDDDDD"
 

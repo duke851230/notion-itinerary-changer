@@ -11,6 +11,10 @@ from openpyxl.utils import (
     get_column_letter,
     column_index_from_string,
 )
+from openpyxl.styles import (
+    Border, Side,
+)
+
 from constant.excel import ColorMap
 
 
@@ -44,3 +48,11 @@ def get_type_color(type_name: str) -> str:
         return ColorMap.beige.value
     
     return mapping[type_name]
+
+def get_default_border() -> Border:
+    return Border(
+        bottom=Side(style='thin'),
+        left=Side(style='thin'),
+        right=Side(style='thin'),
+        top=Side(style='thin'),
+    )

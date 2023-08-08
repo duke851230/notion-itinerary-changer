@@ -15,7 +15,9 @@ from openpyxl.styles import (
 from helpers.excel.utils import (
     find_next_column_letter,
     get_type_color,
+    get_default_border,
 )
+from constant.excel import ColorMap
 
 
 def initialize_sheet(sheet: Worksheet) -> None:
@@ -31,6 +33,8 @@ def set_timeline_in_sheet(sheet: Worksheet, timeline_data: dict) -> None:
             value = val
         )
         c.alignment = Alignment(horizontal="center", vertical="center", wrap_text=True)  # wrap_text=True 自動換行
+        c.fill = PatternFill("solid", fgColor=ColorMap.gray.value)
+        c.border = get_default_border()
     
 def insert_activities_to_sheet(
         sheet: Worksheet,
@@ -49,6 +53,8 @@ def insert_activities_to_sheet(
         )
         header_cell.alignment = Alignment(horizontal="center", vertical="center")
         header_cell.font = Font(size=18)
+        header_cell.fill = PatternFill("solid", fgColor=ColorMap.purple.value)
+        header_cell.border = get_default_border()
 
         for activity in today_activities:
             start_row_index: int = timeline[activity["start_at"]]
@@ -66,12 +72,7 @@ def insert_activities_to_sheet(
                 "solid", 
                 fgColor=get_type_color(activity["type"])
             )
-            activity_cell.border = Border(
-                bottom=Side(style='thin'),
-                left=Side(style='thin'),
-                right=Side(style='thin'),
-                top=Side(style='thin'),
-            )
+            activity_cell.border = get_default_border()
 
         current_column = find_next_column_letter(current_column)
 
