@@ -15,3 +15,4 @@ class PropertyType(Enum):
     place = "rich_text"
     end_at = "date"
     start_at = "date"
+    type = "select"

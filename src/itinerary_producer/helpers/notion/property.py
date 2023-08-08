@@ -8,8 +8,6 @@ if TYPE_CHECKING:
 
 from datetime import datetime
 
-from constant.notion import PropertyType
-
 
 def get_title(property_info: dict) -> str:
     inner_info: dict = property_info["title"][0]
@@ -24,5 +22,6 @@ def get_date(property_info: dict) -> str:
     datetime_obj: datetime = datetime.fromisoformat(datetime_str)
     return datetime_obj.strftime("%H:%M")
 
-
+def get_select(property_info: dict) -> str:
+    return property_info["select"]["name"]
 
