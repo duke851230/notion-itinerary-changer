@@ -44,12 +44,20 @@ def set_timeline_in_sheet(sheet: Worksheet, column: str, name: str, name_row_num
         set_general_format_of_cell(c, font_size=13, fill_color=ColorMap.gray.value)
     
 def insert_activities_to_sheet(
-        sheet: Worksheet,
-        activities: List[list],
-        timeline: dict,
-        start_column: str="B"
-    ) -> None:
+    sheet: Worksheet,
+    activities: List[list],
+    timeline: dict,
+    start_column: str
+) -> None:
+    """ Insert activities to excel.
 
+    :param sheet: current work sheet object
+    :param activities: everyday activities
+    :param timeline: schedule's end timeline which is used to merge activity's cell
+    :param start_column: define where to start writing
+
+    :return: None
+    """
     current_column: str = start_column
 
     for today_activities in activities:
