@@ -18,7 +18,32 @@ from openpyxl.styles import (
 from constant.excel import ColorMap
 
 
-def get_timeline_data(start_at: datetime, end_at: datetime, start_row_number=3, time_interval: int=30) -> Tuple[Dict[str, int], Dict[str, int]]:
+def get_timeline_data(
+    start_at: datetime,
+    end_at: datetime,
+    start_row_number,
+    time_interval: int
+) -> Tuple[Dict[str, int], Dict[str, int]]:
+    """ Get schedule start and end timeline.
+
+    :param start_at: timeline start time
+    :param end_at: timeline end time
+    :param start_row_number: it be used to calculate every moment's row id
+    :param time_interval: timeline interval
+    
+    :return: (start timeline, end timeline)
+
+    :return example:
+    (
+        {
+            '07:30': 3,
+            '08:00': 4,
+            '08:30': 5,
+            'moment': row_id, ...
+        },
+        {...}
+    )
+    """
     pre_timline: Dict[str, int] = {}
     timeline: Dict[str, int] = {}
     current_id: int = start_row_number
@@ -33,7 +58,7 @@ def get_timeline_data(start_at: datetime, end_at: datetime, start_row_number=3, 
 
         current_id += 1
         start_at = start_at + timedelta(minutes=time_interval)
-    
+
     return (pre_timline, timeline)
 
 def find_next_column_letter(current_column_letter: str) -> str:
