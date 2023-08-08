@@ -1,6 +1,6 @@
 from __future__ import annotations
 from typing import (
-    TYPE_CHECKING, List, Optional
+    TYPE_CHECKING,
 )
 
 if TYPE_CHECKING:
@@ -21,16 +21,16 @@ from helpers.excel.utils import (
     get_timeline_data,
 )
 from helpers.notion.utils import (
-    get_daily_card_info,
+    get_daily_activities,
 )
 
 
 FILE_PATH: str = os.path.join(
     configer.excel.EXCEL_BASIC_DIR,
-    "test.xlsx"
+    configer.excel.FILE_NAME
 )
 
-def create_schedule_excel(file_path: str) -> None:
+def produce_schedule_excel(file_path: str) -> None:
     wb: Workbook = Workbook()
     sheet: Worksheet = wb.active
 
@@ -46,7 +46,7 @@ def create_schedule_excel(file_path: str) -> None:
 
     insert_activities_to_sheet(
         sheet=sheet,
-        activities=get_daily_card_info(),
+        activities=get_daily_activities(),
         timeline=timeline,
         start_column="B"
     )
@@ -54,4 +54,5 @@ def create_schedule_excel(file_path: str) -> None:
     wb.save(file_path)
 
 
-create_schedule_excel(FILE_PATH)
+if __name__ == "__main__":
+    produce_schedule_excel(FILE_PATH)

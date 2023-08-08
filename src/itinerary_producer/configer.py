@@ -44,7 +44,7 @@ def initialize_config_model(config_class: BaseModel, toml_keyword: str) -> BaseM
     )
 
     try:
-        config = config_data[toml_keyword]
+        config: dict = config_data[toml_keyword]
     except KeyError:
         raise KeyError(f"config section {toml_keyword} not found")
 
@@ -58,6 +58,7 @@ class NotionConfig(BaseModel, extra="forbid"):
 
 class ExcelConfig(BaseModel, extra="forbid"):
     EXCEL_BASIC_DIR: str
+    FILE_NAME: str
 
 
 class Configer(BaseModel):

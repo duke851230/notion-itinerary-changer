@@ -11,9 +11,14 @@ import requests
 from configer import configer
 
 
-def get_databases_data(database_id: str) -> dict:
-    token: str = configer.notion.TOKEN
+def get_database_data(database_id: str) -> dict:
+    """ Get database data in notion.
 
+    :param database_id: database's id, e.g. "6b46bb53911045bb92f2298aww1c13b3"
+
+    :return: data of database
+    """
+    token: str = configer.notion.TOKEN
     header_payload: dict = {
         'Authorization': token,
         'Content-Type': 'application/json',

@@ -6,8 +6,6 @@ from typing import (
 if TYPE_CHECKING:
     pass
 
-from datetime import datetime
-
 
 def get_title(property_info: dict) -> str:
     inner_info: dict = property_info["title"][0]
