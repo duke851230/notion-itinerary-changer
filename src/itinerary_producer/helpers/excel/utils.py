@@ -11,6 +11,7 @@ from openpyxl.utils import (
     get_column_letter,
     column_index_from_string,
 )
+from constant.excel import ColorMap
 
 
 def get_timeline_data(start_at: datetime, end_at: datetime, start_row_number: int, time_interval: int=30) -> Dict[str, int]:
@@ -31,3 +32,15 @@ def find_next_column_letter(current_column_letter: str) -> str:
     next_column_letter: str = get_column_letter(next_column_id)
 
     return next_column_letter
+
+def get_type_color(type_name: str) -> str:
+    mapping: dict = {
+        "餐廳": ColorMap.blue.value,
+        "景點": ColorMap.green.value,
+        "交通": ColorMap.orange.value
+    }
+
+    if type_name not in mapping:
+        return ColorMap.beige.value
+    
+    return mapping[type_name]

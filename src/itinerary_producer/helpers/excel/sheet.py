@@ -14,7 +14,7 @@ from openpyxl.styles import (
 
 from helpers.excel.utils import (
     find_next_column_letter,
-    get_timeline_data,
+    get_type_color,
 )
 
 
@@ -62,6 +62,16 @@ def insert_activities_to_sheet(
             )
             activity_cell.alignment = Alignment(horizontal="center", vertical="center")
             activity_cell.font = Font(size=14)
+            activity_cell.fill = PatternFill(
+                "solid", 
+                fgColor=get_type_color(activity["type"])
+            )
+            activity_cell.border = Border(
+                bottom=Side(style='thin'),
+                left=Side(style='thin'),
+                right=Side(style='thin'),
+                top=Side(style='thin'),
+            )
 
         current_column = find_next_column_letter(current_column)
 
