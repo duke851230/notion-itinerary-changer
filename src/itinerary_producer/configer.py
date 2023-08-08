@@ -59,6 +59,8 @@ class NotionConfig(BaseModel, extra="forbid"):
 class ExcelConfig(BaseModel, extra="forbid"):
     EXCEL_BASIC_DIR: str
     FILE_NAME: str
+    SCHEDULE_TIMELINE_START_AT: str
+    SCHEDULE_TIMELINE_END_AT: str
 
 
 class Configer(BaseModel):

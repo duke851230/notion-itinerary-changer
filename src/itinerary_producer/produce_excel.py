@@ -36,9 +36,12 @@ def produce_schedule_excel(file_path: str) -> None:
 
     initialize_sheet(sheet=sheet)
 
+    timeline_start_at: list = configer.excel.SCHEDULE_TIMELINE_START_AT.split(":")
+    timeline_end_at: list = configer.excel.SCHEDULE_TIMELINE_END_AT.split(":")
+
     pre_timeline, timeline = get_timeline_data(
-        start_at=datetime(9999, 1, 1, 8, 00),
-        end_at=datetime(9999, 1, 1, 21, 30),
+        start_at=datetime(9999, 1, 1, int(timeline_start_at[0]), int(timeline_start_at[1])),
+        end_at=datetime(9999, 1, 1, int(timeline_end_at[0]), int(timeline_end_at[1])),
         start_row_number=3,
         time_interval=30
     )
