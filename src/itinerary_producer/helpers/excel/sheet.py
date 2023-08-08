@@ -26,7 +26,7 @@ def initialize_sheet(sheet: Worksheet) -> None:
     sheet.sheet_format.defaultRowHeight = 35
 
 def set_timeline_in_sheet(sheet: Worksheet, column: str, start_row_number: int, name: str, timeline_data: dict) -> None:
-    sheet.column_dimensions[column].width = 8
+    sheet.column_dimensions[column].width = 10
     
     header_cell = sheet.cell(
         row = start_row_number - 1, 
@@ -91,7 +91,7 @@ def insert_activities_to_sheet(
                 value=f'項目：{activity["name"]}\n位置：{activity["place"]}'
             )
             activity_cell.alignment = Alignment(horizontal="center", vertical="center", wrap_text=True)
-            activity_cell.font = Font(size=14)
+            activity_cell.font = Font(size=12)
             activity_cell.fill = PatternFill(
                 "solid", fgColor=get_type_color(activity["type"])
             )
