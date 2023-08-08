@@ -18,9 +18,7 @@ def get_rich_text(property_info: dict) -> str:
     return inner_info["text"]["content"]
 
 def get_date(property_info: dict) -> str:
-    datetime_str: str = property_info["date"]["start"]
-    datetime_obj: datetime = datetime.fromisoformat(datetime_str)
-    return datetime_obj.strftime("%H:%M")
+    return property_info["date"]["start"]
 
 def get_select(property_info: dict) -> str:
     return property_info["select"]["name"]

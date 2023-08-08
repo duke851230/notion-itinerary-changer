@@ -16,6 +16,7 @@ from helpers.excel.utils import (
     find_next_column_letter,
     get_type_color,
     get_default_border,
+    get_hour_minute_time,
 )
 from constant.excel import ColorMap
 
@@ -46,31 +47,44 @@ def insert_activities_to_sheet(
     current_column: str = start_column
 
     for today_activities in activities:
-        header_cell = sheet.cell(
+        date_cell = sheet.cell(
             row=1,
+            column=column_index_from_string(current_column),
+            value=today_activities[0]["start_at"][:10]
+        )
+        date_cell.alignment = Alignment(horizontal="center", vertical="center")
+        date_cell.font = Font(size=15)
+        date_cell.fill = PatternFill("solid", fgColor=ColorMap.purple.value)
+        date_cell.border = get_default_border()
+
+        header_cell = sheet.cell(
+            row=2,
             column=column_index_from_string(current_column),
             value=today_activities[0]["day"]
         )
         header_cell.alignment = Alignment(horizontal="center", vertical="center")
         header_cell.font = Font(size=18)
-        header_cell.fill = PatternFill("solid", fgColor=ColorMap.purple.value)
+        header_cell.fill = PatternFill("solid", fgColor=ColorMap.gray.value)
         header_cell.border = get_default_border()
 
         for activity in today_activities:
-            start_row_index: int = timeline[activity["start_at"]]
-            end_row_index: int = timeline[activity["end_at"]]
+            start_row_index: int = timeline[
+                get_hour_minute_time(activity["start_at"])
+            ] + 1
+            end_row_index: int = timeline[
+                get_hour_minute_time(activity["end_at"])
+            ]
             sheet.merge_cells(f"{current_column}{start_row_index}:{current_column}{end_row_index}")
 
             activity_cell = sheet.cell(
                 row=start_row_index,
                 column=column_index_from_string(current_column),
-                value=activity["name"]
+                value=f'項目：{activity["name"]}\n位置：{activity["place"]}'
             )
-            activity_cell.alignment = Alignment(horizontal="center", vertical="center")
+            activity_cell.alignment = Alignment(horizontal="center", vertical="center", wrap_text=True)
             activity_cell.font = Font(size=14)
             activity_cell.fill = PatternFill(
-                "solid", 
-                fgColor=get_type_color(activity["type"])
+                "solid", fgColor=get_type_color(activity["type"])
             )
             activity_cell.border = get_default_border()
 

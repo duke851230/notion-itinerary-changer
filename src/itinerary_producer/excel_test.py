@@ -37,9 +37,9 @@ def create_schedule_excel(file_path: str) -> None:
     initialize_sheet(sheet=sheet)
 
     timeline: dict = get_timeline_data(
-        start_at=datetime(9999, 1, 1, 8, 30),
-        end_at=datetime(9999, 1, 1, 20, 00),
-        start_row_number=2,
+        start_at=datetime(9999, 1, 1, 8, 00),
+        end_at=datetime(9999, 1, 1, 21, 30),
+        start_row_number=3,
         time_interval=30
     )
     set_timeline_in_sheet(sheet, timeline)

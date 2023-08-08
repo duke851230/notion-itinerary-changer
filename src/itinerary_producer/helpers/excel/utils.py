@@ -56,3 +56,7 @@ def get_default_border() -> Border:
         right=Side(style='thin'),
         top=Side(style='thin'),
     )
+
+def get_hour_minute_time(datetime_str: str) -> str:
+    datetime_obj: datetime = datetime.fromisoformat(datetime_str)
+    return datetime_obj.strftime("%H:%M")
