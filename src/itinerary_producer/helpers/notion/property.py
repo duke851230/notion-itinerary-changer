@@ -19,5 +19,7 @@ def get_date(property_info: dict) -> str:
     return property_info["date"]["start"]
 
 def get_select(property_info: dict) -> str:
+    if property_info.get("select") is None:
+        return None
+    
     return property_info["select"]["name"]
-
