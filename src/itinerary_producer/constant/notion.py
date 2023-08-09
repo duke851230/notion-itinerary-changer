@@ -11,8 +11,8 @@ from enum import Enum
 
 class PropertyType(Enum):
     name = "title"
-    day = "rich_text"
+    date = "date"
     place = "rich_text"
-    end_at = "date"
-    start_at = "date"
+    end_at = "rich_text"
+    start_at = "rich_text"
     type = "select"

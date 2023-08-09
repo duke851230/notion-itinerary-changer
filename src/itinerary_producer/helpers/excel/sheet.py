@@ -28,16 +28,8 @@ def initialize_sheet(sheet: Worksheet) -> None:
     sheet.sheet_format.defaultColWidth = 20
     sheet.sheet_format.defaultRowHeight = 35
 
-def set_timeline_in_sheet(sheet: Worksheet, column: str, name: str, name_row_number: int, timeline_data: Tuple[dict]) -> None:
-    sheet.column_dimensions[column].width = 13
-    
-    header_cell: Cell = sheet.cell(
-        row = name_row_number, 
-        column = column_index_from_string(column),
-        value = name
-    )
-    set_general_format_of_cell(header_cell, font_size=15, fill_color=ColorMap.dark_gray.value)
-    
+def set_timeline_in_sheet(sheet: Worksheet, column: str, timeline_data: Tuple[dict]) -> None:
+    sheet.column_dimensions[column].width = 14
     
     start_timeline, end_timeline = timeline_data
     start_timeline = exchange_place_with_key_and_value(start_timeline)
@@ -47,7 +39,7 @@ def set_timeline_in_sheet(sheet: Worksheet, column: str, name: str, name_row_num
         c: Cell = sheet.cell(
             row = row_id,
             column = column_index_from_string(column),
-            value = f"{start_timeline[row_id]}-{end_time}"
+            value = f"{start_timeline[row_id]}~{end_time}"
         )
         set_general_format_of_cell(c, font_size=12, fill_color=ColorMap.gray.value)
     
@@ -57,7 +49,7 @@ def insert_activities_to_sheet(
     timeline: dict,
     start_column: str
 ) -> None:
-    """ Insert activities to excel.
+    """ Insert activities and date title to excel.
 
     :param sheet: current work sheet object
     :param activities: everyday activities
@@ -69,23 +61,16 @@ def insert_activities_to_sheet(
     current_column: str = start_column
 
     for today_activities in activities:
-        date_cell: Cell = sheet.cell(
+        header_cell: Cell = sheet.cell(
             row=1,
             column=column_index_from_string(current_column),
-            value=today_activities[0]["start_at"][:10]
+            value=today_activities[0]["date"]
         )
-        set_general_format_of_cell(date_cell, font_size=15, fill_color=ColorMap.purple.value)
-
-        header_cell: Cell = sheet.cell(
-            row=2,
-            column=column_index_from_string(current_column),
-            value=today_activities[0]["day"]
-        )
-        set_general_format_of_cell(header_cell, font_size=18, fill_color=ColorMap.dark_gray.value)
+        set_general_format_of_cell(header_cell, font_size=16, fill_color=ColorMap.dark_gray.value)
 
         for activity in today_activities:
-            start_time_str: str = get_hour_minute_time(activity["start_at"])
-            end_time_str: str = get_hour_minute_time(activity["end_at"])
+            start_time_str: str = activity["start_at"]
+            end_time_str: str =activity["end_at"]
             start_row_index: int = timeline[start_time_str] + 1
             end_row_index: int = timeline[end_time_str]
 
@@ -102,7 +87,7 @@ def insert_activities_to_sheet(
 
 def set_general_format_of_cell(cell: Cell, font_size: int, fill_color: Optional[str]) -> None:
     cell.alignment = Alignment(horizontal="center", vertical="center", wrap_text=True)
-    cell.font = Font(size=font_size)
+    cell.font = Font(name=u'微軟雅黑', size=font_size)
     if fill_color:
         cell.fill = PatternFill("solid", fgColor=fill_color)
     cell.border = get_default_border()

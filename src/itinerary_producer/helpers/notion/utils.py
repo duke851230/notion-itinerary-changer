@@ -25,7 +25,7 @@ def get_daily_activities() -> List[list]:
     :return example:
     [
         [
-            {'day': 'Day1', 'name': '去程飛機', 'place': '機場', 'type': '交通', 'end_at': '2023-09-30T12:00:00.000+08:00', 'start_at': '2023-09-30T09:00:00.000+08:00'},
+           {'date': '2023-09-30', 'name': '去程飛機', 'place': '機場', 'type': '交通', 'end_at': '11:30', 'start_at': '08:00'},
             ...
         ],
         ...
@@ -45,7 +45,7 @@ def get_daily_activities() -> List[list]:
                 method: Callable = getattr(property, f"get_{property_type}")
                 card_info[lower_field_name] = method(info)
         
-        cur_day: str = card_info[PropertyType.day.name]
+        cur_day: str = card_info[PropertyType.date.name]
         if cur_day not in temp_daily_data:
             temp_daily_data[cur_day] = []
         

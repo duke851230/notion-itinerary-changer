@@ -42,14 +42,12 @@ def produce_schedule_excel(file_path: str) -> None:
     start_timeline, end_timeline = get_timeline_data(
         start_at=datetime(9999, 1, 1, int(timeline_start_at[0]), int(timeline_start_at[1])),
         end_at=datetime(9999, 1, 1, int(timeline_end_at[0]), int(timeline_end_at[1])),
-        start_row_number=3,
+        start_row_number=2,
         time_interval=30
     )
     set_timeline_in_sheet(
         sheet=sheet,
         column="A",
-        name="時間",
-        name_row_number=2,
         timeline_data=(start_timeline, end_timeline)
     )
 
