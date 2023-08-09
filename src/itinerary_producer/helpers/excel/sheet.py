@@ -39,15 +39,15 @@ def set_timeline_in_sheet(sheet: Worksheet, column: str, name: str, name_row_num
     set_general_format_of_cell(header_cell, font_size=15, fill_color=ColorMap.dark_gray.value)
     
     
-    pre_timline, timeline = timeline_data
-    pre_timline = exchange_place_with_key_and_value(pre_timline)
-    timeline = exchange_place_with_key_and_value(timeline)
+    start_timeline, end_timeline = timeline_data
+    start_timeline = exchange_place_with_key_and_value(start_timeline)
+    end_timeline = exchange_place_with_key_and_value(end_timeline)
 
-    for row_id, time  in timeline.items():
+    for row_id, end_time in end_timeline.items():
         c: Cell = sheet.cell(
             row = row_id,
             column = column_index_from_string(column),
-            value = f"{pre_timline[row_id]}~{time}"
+            value = f"{start_timeline[row_id]}-{end_time}"
         )
         set_general_format_of_cell(c, font_size=12, fill_color=ColorMap.gray.value)
     
@@ -86,8 +86,8 @@ def insert_activities_to_sheet(
         for activity in today_activities:
             start_time_str: str = get_hour_minute_time(activity["start_at"])
             end_time_str: str = get_hour_minute_time(activity["end_at"])
-            start_row_index: int = timeline[start_time_str]
-            end_row_index: int = timeline[end_time_str] - 1
+            start_row_index: int = timeline[start_time_str] + 1
+            end_row_index: int = timeline[end_time_str]
 
             sheet.merge_cells(f"{current_column}{start_row_index}:{current_column}{end_row_index}")
 

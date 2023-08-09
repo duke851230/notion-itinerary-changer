@@ -1,6 +1,6 @@
 from __future__ import annotations
 from typing import (
-    TYPE_CHECKING,
+    TYPE_CHECKING, List,
 )
 
 if TYPE_CHECKING:
@@ -36,10 +36,10 @@ def produce_schedule_excel(file_path: str) -> None:
 
     initialize_sheet(sheet=sheet)
 
-    timeline_start_at: list = configer.excel.SCHEDULE_TIMELINE_START_AT.split(":")
-    timeline_end_at: list = configer.excel.SCHEDULE_TIMELINE_END_AT.split(":")
+    timeline_start_at: List[str] = configer.excel.SCHEDULE_TIMELINE_START_AT.split(":")
+    timeline_end_at: List[str] = configer.excel.SCHEDULE_TIMELINE_END_AT.split(":")
 
-    pre_timline, timeline = get_timeline_data(
+    start_timeline, end_timeline = get_timeline_data(
         start_at=datetime(9999, 1, 1, int(timeline_start_at[0]), int(timeline_start_at[1])),
         end_at=datetime(9999, 1, 1, int(timeline_end_at[0]), int(timeline_end_at[1])),
         start_row_number=3,
@@ -50,13 +50,13 @@ def produce_schedule_excel(file_path: str) -> None:
         column="A",
         name="時間",
         name_row_number=2,
-        timeline_data=(pre_timline, timeline)
+        timeline_data=(start_timeline, end_timeline)
     )
 
     insert_activities_to_sheet(
         sheet=sheet,
         activities=get_daily_activities(),
-        timeline=timeline,
+        timeline=end_timeline,
         start_column="B"
     )
 

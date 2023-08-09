@@ -35,31 +35,34 @@ def get_timeline_data(
 
     :return example:
     (
+        # start timeline
         {
             '07:30': 3,
             '08:00': 4,
             '08:30': 5,
             'moment': row_id, ...
         },
+        # end timeline
         {...}
     )
     """
-    pre_timline: Dict[str, int] = {}
-    timeline: Dict[str, int] = {}
-    current_id: int = start_row_number
+    start_timeline: Dict[str, int] = {}
+    end_timeline: Dict[str, int] = {}
+    current_row: int = start_row_number
+    current_datetime: datetime = start_at
 
-    while start_at <= end_at:
-        pre_time: datetime = start_at - timedelta(minutes=time_interval)
-        pre_time_str: str = pre_time.strftime("%H:%M")
-        pre_timline[pre_time_str] = current_id
+    while current_datetime <= end_at:
+        start_time: datetime = current_datetime - timedelta(minutes=time_interval)
+        start_time_str: str = start_time.strftime("%H:%M")
+        start_timeline[start_time_str] = current_row
 
-        time_str: str = start_at.strftime("%H:%M")
-        timeline[time_str] = current_id
+        end_time_str: str = current_datetime.strftime("%H:%M")
+        end_timeline[end_time_str] = current_row
 
-        current_id += 1
-        start_at = start_at + timedelta(minutes=time_interval)
+        current_row += 1
+        current_datetime = current_datetime + timedelta(minutes=time_interval)
 
-    return (pre_timline, timeline)
+    return (start_timeline, end_timeline)
 
 def find_next_column_letter(current_column_letter: str) -> str:
     next_column_id: int = column_index_from_string(current_column_letter) + 1
