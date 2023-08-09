@@ -16,7 +16,6 @@ from helpers.excel.utils import (
     find_next_column_letter,
     get_type_color,
     get_default_border,
-    get_hour_minute_time,
 )
 from helpers.general import (
     exchange_place_with_key_and_value,
@@ -24,24 +23,33 @@ from helpers.general import (
 from constant.excel import ColorMap
 
 
-def initialize_sheet(sheet: Worksheet) -> None:
+def initialize_sheet(sheet: Worksheet, merge_row_num: int) -> None:
     sheet.sheet_format.defaultColWidth = 20
-    sheet.sheet_format.defaultRowHeight = 35
+    sheet.sheet_format.defaultRowHeight = 45 // merge_row_num
+    sheet.row_dimensions[1].height = 35
 
-def set_timeline_in_sheet(sheet: Worksheet, column: str, timeline_data: Tuple[dict]) -> None:
-    sheet.column_dimensions[column].width = 14
+def set_timeline_in_sheet(sheet: Worksheet, column: str, timeline_data: Tuple[dict], merge_row_num: int) -> None:
+    sheet.column_dimensions[column].width = 15
     
     start_timeline, end_timeline = timeline_data
     start_timeline = exchange_place_with_key_and_value(start_timeline)
     end_timeline = exchange_place_with_key_and_value(end_timeline)
 
+    need_merge_rows: List[dict] = []
     for row_id, end_time in end_timeline.items():
+        need_merge_rows.append({"row_id": row_id, "time": end_time})
+        if len(need_merge_rows) < merge_row_num:
+            continue
+        
+        sheet.merge_cells(f"{column}{need_merge_rows[0]['row_id']}:{column}{need_merge_rows[-1]['row_id']}")
+        
         c: Cell = sheet.cell(
-            row = row_id,
+            row = need_merge_rows[0]['row_id'],
             column = column_index_from_string(column),
-            value = f"{start_timeline[row_id]}~{end_time}"
+            value = f"{start_timeline[need_merge_rows[0]['row_id']]}~{need_merge_rows[-1]['time']}"
         )
         set_general_format_of_cell(c, font_size=12, fill_color=ColorMap.gray.value)
+        need_merge_rows.clear()
     
 def insert_activities_to_sheet(
     sheet: Worksheet,
@@ -79,9 +87,10 @@ def insert_activities_to_sheet(
             activity_cell: Cell = sheet.cell(
                 row=start_row_index,
                 column=column_index_from_string(current_column),
-                value=f'{activity["name"]}\n{start_time_str}~{end_time_str}\n位置：{activity["place"]}'
+                value=f'{activity["name"]}\n{start_time_str}~{end_time_str}\n{activity["place"]}'
             )
-            set_general_format_of_cell(activity_cell, font_size=12, fill_color=get_type_color(activity["type"]))
+            set_general_format_of_cell(activity_cell, font_size=10, fill_color=get_type_color(activity["type"]))
+            auto_set_cell_width(sheet, activity_cell)
 
         current_column = find_next_column_letter(current_column)
 
@@ -91,3 +100,20 @@ def set_general_format_of_cell(cell: Cell, font_size: int, fill_color: Optional[
     if fill_color:
         cell.fill = PatternFill("solid", fgColor=fill_color)
     cell.border = get_default_border()
+
+def auto_set_cell_width(sheet: Worksheet, cell: Cell) -> None:
+    MAX_WIDTH: int = 40
+    
+    value_list: List[str] = str(cell.value).split("\n")
+    value_length_list: List[int] = [len(i) for i in value_list]
+    value_max_length: int = max(*value_length_list) * 1.6
+    
+    cell_length: int = max(
+        value_max_length, 
+        sheet.column_dimensions[cell.column_letter].width
+    )
+    
+    if cell_length < MAX_WIDTH:
+        sheet.column_dimensions[cell.column_letter].width = cell_length
+    else:
+        sheet.column_dimensions[cell.column_letter].width = MAX_WIDTH

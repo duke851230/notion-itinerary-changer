@@ -52,11 +52,11 @@ def get_timeline_data(
     current_datetime: datetime = start_at
 
     while current_datetime <= end_at:
-        start_time: datetime = current_datetime - timedelta(minutes=time_interval)
-        start_time_str: str = start_time.strftime("%H:%M")
+        start_time_str: str = current_datetime.strftime("%H:%M")
         start_timeline[start_time_str] = current_row
-
-        end_time_str: str = current_datetime.strftime("%H:%M")
+        
+        end_time: datetime = current_datetime + timedelta(minutes=time_interval)
+        end_time_str: str = end_time.strftime("%H:%M")
         end_timeline[end_time_str] = current_row
 
         current_row += 1
@@ -93,3 +93,6 @@ def get_default_border() -> Border:
 def get_hour_minute_time(datetime_str: str) -> str:
     datetime_obj: datetime = datetime.fromisoformat(datetime_str)
     return datetime_obj.strftime("%H:%M")
+
+def get_how_many_rows_in_30_min(time_interval: int) -> int:
+    return 30 // time_interval
