@@ -94,5 +94,3 @@ def get_hour_minute_time(datetime_str: str) -> str:
     datetime_obj: datetime = datetime.fromisoformat(datetime_str)
     return datetime_obj.strftime("%H:%M")
 
-def get_how_many_rows_in_30_min(time_interval: int) -> int:
-    return 30 // time_interval

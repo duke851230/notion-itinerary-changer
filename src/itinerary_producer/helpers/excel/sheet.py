@@ -25,11 +25,11 @@ from constant.excel import ColorMap
 
 def initialize_sheet(sheet: Worksheet, merge_row_num: int) -> None:
     sheet.sheet_format.defaultColWidth = 20
-    sheet.sheet_format.defaultRowHeight = 45 // merge_row_num
+    sheet.sheet_format.defaultRowHeight = 50 // merge_row_num
     sheet.row_dimensions[1].height = 35
 
 def set_timeline_in_sheet(sheet: Worksheet, column: str, timeline_data: Tuple[dict], merge_row_num: int) -> None:
-    sheet.column_dimensions[column].width = 15
+    sheet.column_dimensions[column].width = 12
     
     start_timeline, end_timeline = timeline_data
     start_timeline = exchange_place_with_key_and_value(start_timeline)
@@ -48,7 +48,7 @@ def set_timeline_in_sheet(sheet: Worksheet, column: str, timeline_data: Tuple[di
             column = column_index_from_string(column),
             value = f"{start_timeline[need_merge_rows[0]['row_id']]}~{need_merge_rows[-1]['time']}"
         )
-        set_general_format_of_cell(c, font_size=12, fill_color=ColorMap.gray.value)
+        set_general_format_of_cell(c, font_size=10, fill_color=ColorMap.gray.value)
         need_merge_rows.clear()
     
 def insert_activities_to_sheet(
@@ -87,10 +87,10 @@ def insert_activities_to_sheet(
             activity_cell: Cell = sheet.cell(
                 row=start_row_index,
                 column=column_index_from_string(current_column),
-                value=f'{activity["name"]}\n{start_time_str}~{end_time_str}\n{activity["place"]}'
+                value=f'{activity["name"]}\n{start_time_str}~{end_time_str}'
             )
             set_general_format_of_cell(activity_cell, font_size=10, fill_color=get_type_color(activity["type"]))
-            auto_set_cell_width(sheet, activity_cell)
+            auto_adjust_cell_width(sheet, activity_cell)
 
         current_column = find_next_column_letter(current_column)
 
@@ -101,7 +101,7 @@ def set_general_format_of_cell(cell: Cell, font_size: int, fill_color: Optional[
         cell.fill = PatternFill("solid", fgColor=fill_color)
     cell.border = get_default_border()
 
-def auto_set_cell_width(sheet: Worksheet, cell: Cell) -> None:
+def auto_adjust_cell_width(sheet: Worksheet, cell: Cell) -> None:
     MAX_WIDTH: int = 40
     
     value_list: List[str] = str(cell.value).split("\n")

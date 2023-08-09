@@ -62,6 +62,7 @@ class ExcelConfig(BaseModel, extra="forbid"):
     SCHEDULE_TIMELINE_START_AT: str
     SCHEDULE_TIMELINE_END_AT: str
     SCHEDULE_TIMELINE_INTERVAL: int
+    MINIMAL_INTERVAL: int
 
 
 class Configer(BaseModel):

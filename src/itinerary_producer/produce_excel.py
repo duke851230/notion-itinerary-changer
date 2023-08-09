@@ -19,7 +19,6 @@ from helpers.excel.sheet import (
 )
 from helpers.excel.utils import (
     get_timeline_data,
-    get_how_many_rows_in_30_min,
 )
 from helpers.notion.utils import (
     get_daily_activities,
@@ -35,9 +34,12 @@ def produce_schedule_excel(file_path: str) -> None:
     wb: Workbook = Workbook()
     sheet: Worksheet = wb.active
 
-    row_num: int = get_how_many_rows_in_30_min(configer.excel.SCHEDULE_TIMELINE_INTERVAL)
+    row_number_in_one_timeline_interval: int = configer.excel.SCHEDULE_TIMELINE_INTERVAL // configer.excel.MINIMAL_INTERVAL
     
-    initialize_sheet(sheet=sheet, merge_row_num=row_num)
+    initialize_sheet(
+        sheet=sheet,
+        merge_row_num=row_number_in_one_timeline_interval
+    )
 
     timeline_start_at: List[str] = configer.excel.SCHEDULE_TIMELINE_START_AT.split(":")
     timeline_end_at: List[str] = configer.excel.SCHEDULE_TIMELINE_END_AT.split(":")
@@ -46,13 +48,13 @@ def produce_schedule_excel(file_path: str) -> None:
         start_at=datetime(9999, 1, 1, int(timeline_start_at[0]), int(timeline_start_at[1])),
         end_at=datetime(9999, 1, 1, int(timeline_end_at[0]), int(timeline_end_at[1])),
         start_row_number=2,
-        time_interval=configer.excel.SCHEDULE_TIMELINE_INTERVAL
+        time_interval=configer.excel.MINIMAL_INTERVAL
     )
     set_timeline_in_sheet(
         sheet=sheet,
         column="A",
         timeline_data=(start_timeline, end_timeline),
-        merge_row_num=row_num
+        merge_row_num=row_number_in_one_timeline_interval
     )
 
     insert_activities_to_sheet(
