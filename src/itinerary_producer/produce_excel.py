@@ -39,7 +39,7 @@ def produce_schedule_excel(file_path: str) -> None:
     timeline_start_at: list = configer.excel.SCHEDULE_TIMELINE_START_AT.split(":")
     timeline_end_at: list = configer.excel.SCHEDULE_TIMELINE_END_AT.split(":")
 
-    pre_timeline, timeline = get_timeline_data(
+    pre_timline, timeline = get_timeline_data(
         start_at=datetime(9999, 1, 1, int(timeline_start_at[0]), int(timeline_start_at[1])),
         end_at=datetime(9999, 1, 1, int(timeline_end_at[0]), int(timeline_end_at[1])),
         start_row_number=3,
@@ -48,23 +48,16 @@ def produce_schedule_excel(file_path: str) -> None:
     set_timeline_in_sheet(
         sheet=sheet,
         column="A",
-        name="起始時間",
+        name="時間",
         name_row_number=2,
-        timeline_data=pre_timeline
-    )
-    set_timeline_in_sheet(
-        sheet=sheet,
-        column="B",
-        name="結束時間",
-        name_row_number=2,
-        timeline_data=timeline
+        timeline_data=(pre_timline, timeline)
     )
 
     insert_activities_to_sheet(
         sheet=sheet,
         activities=get_daily_activities(),
         timeline=timeline,
-        start_column="C"
+        start_column="B"
     )
 
     wb.save(file_path)
