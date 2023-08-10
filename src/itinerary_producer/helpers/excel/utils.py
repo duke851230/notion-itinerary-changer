@@ -93,7 +93,7 @@ def get_type_display_text(
         )
     
     if note:
-        display_text += f"\n{note}"
+        display_text += f"\n備註：{note}"
     
     return display_text
 

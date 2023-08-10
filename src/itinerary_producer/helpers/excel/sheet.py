@@ -26,7 +26,7 @@ from constant.excel import ColorMap
 
 def initialize_sheet(sheet: Worksheet, merge_row_num: int) -> None:
     sheet.sheet_format.defaultColWidth = 20
-    sheet.sheet_format.defaultRowHeight = 50 // merge_row_num
+    sheet.sheet_format.defaultRowHeight = 60 // merge_row_num
     sheet.row_dimensions[1].height = 35
 
 def set_timeline_in_sheet(sheet: Worksheet, column: str, timeline_data: Tuple[dict], merge_row_num: int) -> None:
