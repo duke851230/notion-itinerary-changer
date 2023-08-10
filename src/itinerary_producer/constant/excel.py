@@ -1,6 +1,6 @@
 from __future__ import annotations
 from typing import (
-    TYPE_CHECKING,
+    TYPE_CHECKING, Dict,
 )
 
 if TYPE_CHECKING:
@@ -21,3 +21,18 @@ class ColorMap(Enum):
     dark_gray = "00969696"
     white = "00FFFFFF"
 
+ACTIVITY_DISPLAY_TEXT_WITH_TYPE_MAPPING: Dict[str, str] = {
+    "餐廳": "{activity_name}\n{start_time}~{end_time}\n{place}",
+    "景點": "{activity_name}\n{start_time}~{end_time}\n{place}",
+    "交通": "{activity_name}\n{start_time}~{end_time}\n{place}",
+    "雜務": "{activity_name}({start_time}~{end_time})",
+    "其他": "{activity_name}({start_time}~{end_time})"
+}
+
+BACKGROUND_COLOR_WITH_TYPE_MAPPING: Dict[str, str] = {
+    "餐廳": ColorMap.blue.value,
+    "景點": ColorMap.green.value,
+    "交通": ColorMap.orange.value,
+    "雜務": ColorMap.beige.value,
+    "其他": ColorMap.beige.value
+}

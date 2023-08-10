@@ -14,6 +14,7 @@ from openpyxl.styles import (
 
 from helpers.excel.utils import (
     find_next_column_letter,
+    get_type_display_text,
     get_type_color,
     get_default_border,
 )
@@ -87,7 +88,13 @@ def insert_activities_to_sheet(
             activity_cell: Cell = sheet.cell(
                 row=start_row_index,
                 column=column_index_from_string(current_column),
-                value=f'{activity["name"]}\n{start_time_str}~{end_time_str}'
+                value=get_type_display_text(
+                    type_name=activity["type"],
+                    activity_name=activity["name"],
+                    start_time=start_time_str,
+                    end_time=end_time_str,
+                    place=activity["place"]
+                )
             )
             set_general_format_of_cell(activity_cell, font_size=10, fill_color=get_type_color(activity["type"]))
             auto_adjust_cell_width(sheet, activity_cell)
@@ -106,7 +113,10 @@ def auto_adjust_cell_width(sheet: Worksheet, cell: Cell) -> None:
     
     value_list: List[str] = str(cell.value).split("\n")
     value_length_list: List[int] = [len(i) for i in value_list]
-    value_max_length: int = max(*value_length_list) * 1.6
+    if len(value_length_list) == 1:
+        value_max_length: int = value_length_list[0] * 1.6
+    else:
+        value_max_length: int = max(*value_length_list) * 1.6
     
     cell_length: int = max(
         value_max_length, 

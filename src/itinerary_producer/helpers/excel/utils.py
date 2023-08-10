@@ -1,6 +1,6 @@
 from __future__ import annotations
 from typing import (
-    TYPE_CHECKING, Dict, Tuple
+    TYPE_CHECKING, Dict, Tuple, Optional
 )
 
 if TYPE_CHECKING:
@@ -15,7 +15,11 @@ from openpyxl.styles import (
     Border, Side,
 )
 
-from constant.excel import ColorMap
+from constant.excel import (
+    ColorMap,
+    ACTIVITY_DISPLAY_TEXT_WITH_TYPE_MAPPING,
+    BACKGROUND_COLOR_WITH_TYPE_MAPPING,
+)
 
 
 def get_timeline_data(
@@ -70,15 +74,30 @@ def find_next_column_letter(current_column_letter: str) -> str:
 
     return next_column_letter
 
-def get_type_color(type_name: str) -> str:
-    mapping: dict = {
-        "餐廳": ColorMap.blue.value,
-        "景點": ColorMap.green.value,
-        "交通": ColorMap.orange.value
-    }
+def get_type_display_text(
+    type_name: str,
+    activity_name: str,
+    start_time: str,
+    end_time: str,
+    place: Optional[str]=None
+) -> str:
+    mapping: Dict[str, str] = ACTIVITY_DISPLAY_TEXT_WITH_TYPE_MAPPING
 
     if type_name not in mapping:
-        return ColorMap.beige.value
+        return f"{activity_name}"
+    
+    return mapping[type_name].format(
+        activity_name = activity_name,
+        start_time = start_time,
+        end_time = end_time,
+        place = place
+    )
+
+def get_type_color(type_name: str) -> str:
+    mapping: Dict[str, str] = BACKGROUND_COLOR_WITH_TYPE_MAPPING
+
+    if type_name not in mapping:
+        return ColorMap.white.value
     
     return mapping[type_name]
 
