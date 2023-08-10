@@ -1,6 +1,6 @@
 from __future__ import annotations
 from typing import (
-    TYPE_CHECKING,
+    TYPE_CHECKING, Optional,
 )
 
 if TYPE_CHECKING:
@@ -8,17 +8,21 @@ if TYPE_CHECKING:
 
 import os, sys
 import toml
-from pydantic import BaseModel
+from pydantic import BaseModel  # type: ignore
 
 
 def get_config_path() -> str:
     CONFIG_DIRECTORY_NAME: str = "config"
     CONFIG_FILE_NAME: str = "config.toml"
+    
+    execution_relative_path: Optional[str] = sys.modules["__main__"].__file__
+    if execution_relative_path is None:
+        raise Exception("Can't find execution path")
+    
+    file_absolute_path: str = os.path.abspath(execution_relative_path)
+    file_directory_path: str = os.path.dirname(file_absolute_path)
 
-    current_file_path: str = os.path.abspath(sys.modules["__main__"].__file__)
-    current_file_directory: str = os.path.dirname(current_file_path)
-
-    return os.path.join(current_file_directory, CONFIG_DIRECTORY_NAME, CONFIG_FILE_NAME)
+    return os.path.join(file_directory_path, CONFIG_DIRECTORY_NAME, CONFIG_FILE_NAME)
 
 def read_toml_data(file_path: str) -> dict:
     config_data: dict = {}
@@ -51,12 +55,12 @@ def initialize_config_model(config_class: BaseModel, toml_keyword: str) -> BaseM
     return config_class(**config)
         
 
-class NotionConfig(BaseModel, extra="forbid"):
+class NotionConfig(BaseModel):
     TOKEN: str
     DATABASE_ID: str
 
 
-class ExcelConfig(BaseModel, extra="forbid"):
+class ExcelConfig(BaseModel):
     EXCEL_BASIC_DIR: str
     FILE_NAME: str
     SCHEDULE_TIMELINE_START_AT: str

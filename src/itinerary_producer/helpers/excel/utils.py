@@ -1,6 +1,6 @@
 from __future__ import annotations
 from typing import (
-    TYPE_CHECKING, Dict, Tuple, Optional
+    TYPE_CHECKING, Dict, List,
 )
 
 if TYPE_CHECKING:
@@ -27,7 +27,7 @@ def get_timeline_data(
     end_at: datetime,
     start_row_number,
     time_interval: int
-) -> Tuple[Dict[str, int], Dict[str, int]]:
+) -> List[Dict[str, int]]:
     """ Get schedule start and end timeline.
 
     :param start_at: timeline start time
@@ -38,7 +38,7 @@ def get_timeline_data(
     :return: (start timeline, end timeline)
 
     :return example:
-    (
+    [
         # start timeline
         {
             '07:30': 3,
@@ -48,7 +48,7 @@ def get_timeline_data(
         },
         # end timeline
         {...}
-    )
+    ]
     """
     start_timeline: Dict[str, int] = {}
     end_timeline: Dict[str, int] = {}
@@ -66,7 +66,7 @@ def get_timeline_data(
         current_row += 1
         current_datetime = current_datetime + timedelta(minutes=time_interval)
 
-    return (start_timeline, end_timeline)
+    return [start_timeline, end_timeline]
 
 def find_next_column_letter(current_column_letter: str) -> str:
     next_column_id: int = column_index_from_string(current_column_letter) + 1
@@ -86,7 +86,7 @@ def get_type_display_text(
     if type_name not in mapping:
         display_text: str = f"{activity_name}"
     else:
-        display_text: str = mapping[type_name].format(
+        display_text = mapping[type_name].format(
             activity_name = activity_name,
             start_time = start_time,
             end_time = end_time

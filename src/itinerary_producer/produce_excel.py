@@ -53,7 +53,7 @@ def produce_schedule_excel(file_path: str) -> None:
     set_timeline_in_sheet(
         sheet=sheet,
         column="A",
-        timeline_data=(start_timeline, end_timeline),
+        timeline_data=[start_timeline, end_timeline],
         merge_row_num=row_number_in_one_timeline_interval
     )
 

@@ -1,15 +1,18 @@
 from __future__ import annotations
 from typing import (
-    TYPE_CHECKING, List, Optional, Tuple
+    TYPE_CHECKING, Any, List, Optional, Union,
 )
 
 if TYPE_CHECKING:
-    from openpyxl.cell.cell import Cell
+    pass
 
 from openpyxl.worksheet.worksheet import Worksheet
 from openpyxl.utils import column_index_from_string
 from openpyxl.styles import (
-    Alignment, Font, PatternFill, Border, Side,
+    Alignment, Font, PatternFill,
+)
+from openpyxl.cell.cell import (
+    Cell, MergedCell,
 )
 
 from helpers.excel.utils import (
@@ -29,7 +32,7 @@ def initialize_sheet(sheet: Worksheet, merge_row_num: int) -> None:
     sheet.sheet_format.defaultRowHeight = 60 // merge_row_num
     sheet.row_dimensions[1].height = 35
 
-def set_timeline_in_sheet(sheet: Worksheet, column: str, timeline_data: Tuple[dict], merge_row_num: int) -> None:
+def set_timeline_in_sheet(sheet: Worksheet, column: str, timeline_data: List[dict], merge_row_num: int) -> None:
     sheet.column_dimensions[column].width = 12
     
     start_timeline, end_timeline = timeline_data
@@ -44,7 +47,7 @@ def set_timeline_in_sheet(sheet: Worksheet, column: str, timeline_data: Tuple[di
         
         sheet.merge_cells(f"{column}{need_merge_rows[0]['row_id']}:{column}{need_merge_rows[-1]['row_id']}")
         
-        c: Cell = sheet.cell(
+        c: Union[MergedCell, Any, Cell] = sheet.cell(
             row = need_merge_rows[0]['row_id'],
             column = column_index_from_string(column),
             value = f"{start_timeline[need_merge_rows[0]['row_id']]}~{need_merge_rows[-1]['time']}"
@@ -70,7 +73,7 @@ def insert_activities_to_sheet(
     current_column: str = start_column
 
     for today_activities in activities:
-        header_cell: Cell = sheet.cell(
+        header_cell: Union[MergedCell, Any, Cell] = sheet.cell(
             row=1,
             column=column_index_from_string(current_column),
             value=today_activities[0]["date"]
@@ -85,7 +88,7 @@ def insert_activities_to_sheet(
 
             sheet.merge_cells(f"{current_column}{start_row_index}:{current_column}{end_row_index}")
 
-            activity_cell: Cell = sheet.cell(
+            activity_cell: Union[MergedCell, Any, Cell] = sheet.cell(
                 row=start_row_index,
                 column=column_index_from_string(current_column),
                 value=get_type_display_text(
@@ -97,11 +100,12 @@ def insert_activities_to_sheet(
                 )
             )
             set_general_format_of_cell(activity_cell, font_size=10, fill_color=get_type_color(activity["type"]))
-            auto_adjust_cell_width(sheet, activity_cell)
+            if isinstance(activity_cell, Cell):
+                auto_adjust_cell_width(sheet, activity_cell)
 
         current_column = find_next_column_letter(current_column)
 
-def set_general_format_of_cell(cell: Cell, font_size: int, fill_color: Optional[str]) -> None:
+def set_general_format_of_cell(cell: Union[MergedCell, Any, Cell], font_size: int, fill_color: Optional[str]) -> None:
     cell.alignment = Alignment(horizontal="center", vertical="center", wrap_text=True)
     cell.font = Font(name=u'微軟雅黑', size=font_size)
     if fill_color:
@@ -109,16 +113,16 @@ def set_general_format_of_cell(cell: Cell, font_size: int, fill_color: Optional[
     cell.border = get_default_border()
 
 def auto_adjust_cell_width(sheet: Worksheet, cell: Cell) -> None:
-    MAX_WIDTH: int = 40
+    MAX_WIDTH: float = 40.0
     
     value_list: List[str] = str(cell.value).split("\n")
     value_length_list: List[int] = [len(i) for i in value_list]
     if len(value_length_list) == 1:
-        value_max_length: int = value_length_list[0] * 1.6
+        value_max_length: float = value_length_list[0] * 1.6
     else:
-        value_max_length: int = max(*value_length_list) * 1.6
+        value_max_length = max(*value_length_list) * 1.6
     
-    cell_length: int = max(
+    cell_length: float = max(
         value_max_length, 
         sheet.column_dimensions[cell.column_letter].width
     )
