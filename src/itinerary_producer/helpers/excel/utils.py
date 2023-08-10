@@ -79,19 +79,23 @@ def get_type_display_text(
     activity_name: str,
     start_time: str,
     end_time: str,
-    place: Optional[str]=None
+    note: str=''
 ) -> str:
     mapping: Dict[str, str] = ACTIVITY_DISPLAY_TEXT_WITH_TYPE_MAPPING
 
     if type_name not in mapping:
-        return f"{activity_name}"
+        display_text: str = f"{activity_name}"
+    else:
+        display_text: str = mapping[type_name].format(
+            activity_name = activity_name,
+            start_time = start_time,
+            end_time = end_time
+        )
     
-    return mapping[type_name].format(
-        activity_name = activity_name,
-        start_time = start_time,
-        end_time = end_time,
-        place = place
-    )
+    if note:
+        display_text += f"\n{note}"
+    
+    return display_text
 
 def get_type_color(type_name: str) -> str:
     mapping: Dict[str, str] = BACKGROUND_COLOR_WITH_TYPE_MAPPING

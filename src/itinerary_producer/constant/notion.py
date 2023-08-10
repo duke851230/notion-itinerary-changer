@@ -12,7 +12,7 @@ from enum import Enum
 class PropertyType(Enum):
     name = "title"
     date = "date"
-    place = "rich_text"
+    note = "rich_text"
     end_at = "rich_text"
     start_at = "rich_text"
     type = "select"

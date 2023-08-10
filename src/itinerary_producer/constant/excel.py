@@ -22,9 +22,9 @@ class ColorMap(Enum):
     white = "00FFFFFF"
 
 ACTIVITY_DISPLAY_TEXT_WITH_TYPE_MAPPING: Dict[str, str] = {
-    "餐廳": "{activity_name}\n{start_time}~{end_time}\n{place}",
-    "景點": "{activity_name}\n{start_time}~{end_time}\n{place}",
-    "交通": "{activity_name}\n{start_time}~{end_time}\n{place}",
+    "餐廳": "{activity_name}\n{start_time}~{end_time}",
+    "景點": "{activity_name}\n{start_time}~{end_time}",
+    "交通": "{activity_name}\n{start_time}~{end_time}",
     "雜務": "{activity_name}({start_time}~{end_time})",
     "其他": "{activity_name}({start_time}~{end_time})"
 }

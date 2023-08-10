@@ -25,7 +25,7 @@ def get_daily_activities() -> List[list]:
     :return example:
     [
         [
-           {'date': '2023-09-30', 'name': '去程飛機', 'place': '機場', 'type': '交通', 'end_at': '11:30', 'start_at': '08:00'},
+           {'date': '2023-09-30', 'name': '去程飛機', 'note': '', 'type': '交通', 'end_at': '11:30', 'start_at': '08:00'},
             ...
         ],
         ...

@@ -93,7 +93,7 @@ def insert_activities_to_sheet(
                     activity_name=activity["name"],
                     start_time=start_time_str,
                     end_time=end_time_str,
-                    place=activity["place"]
+                    note=activity["note"]
                 )
             )
             set_general_format_of_cell(activity_cell, font_size=10, fill_color=get_type_color(activity["type"]))
