@@ -75,16 +75,21 @@ def find_next_column_letter(current_column_letter: str) -> str:
     return next_column_letter
 
 def get_type_display_text(
+    used_rows: int,
     type_name: str,
     activity_name: str,
     start_time: str,
     end_time: str,
     note: str=''
 ) -> str:
+    minimal_text: str = f"{activity_name}({start_time}~{end_time})"
     mapping: Dict[str, str] = ACTIVITY_DISPLAY_TEXT_WITH_TYPE_MAPPING
+    
+    if used_rows <= 3:
+        return minimal_text
 
     if type_name not in mapping:
-        display_text: str = f"{activity_name}"
+        display_text: str = minimal_text
     else:
         display_text = mapping[type_name].format(
             activity_name = activity_name,

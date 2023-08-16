@@ -92,6 +92,7 @@ def insert_activities_to_sheet(
                 row=start_row_index,
                 column=column_index_from_string(current_column),
                 value=get_type_display_text(
+                    used_rows=end_row_index-start_row_index+1,
                     type_name=activity["type"],
                     activity_name=activity["name"],
                     start_time=start_time_str,
@@ -113,14 +114,14 @@ def set_general_format_of_cell(cell: Union[MergedCell, Any, Cell], font_size: in
     cell.border = get_default_border()
 
 def auto_adjust_cell_width(sheet: Worksheet, cell: Cell) -> None:
-    MAX_WIDTH: float = 40.0
+    MAX_WIDTH: float = 50.0
     
     value_list: List[str] = str(cell.value).split("\n")
     value_length_list: List[int] = [len(i) for i in value_list]
     if len(value_length_list) == 1:
-        value_max_length: float = value_length_list[0] * 1.6
+        value_max_length: float = value_length_list[0] * 1.7
     else:
-        value_max_length = max(*value_length_list) * 1.6
+        value_max_length = max(*value_length_list) * 1.7
     
     cell_length: float = max(
         value_max_length, 
