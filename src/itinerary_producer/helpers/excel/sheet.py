@@ -82,7 +82,7 @@ def insert_activities_to_sheet(
 
         for activity in today_activities:
             start_time_str: str = activity["start_at"]
-            end_time_str: str =activity["end_at"]
+            end_time_str: str = activity["end_at"]
             start_row_index: int = timeline[start_time_str] + 1
             end_row_index: int = timeline[end_time_str]
 

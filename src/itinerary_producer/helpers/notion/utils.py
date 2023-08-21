@@ -6,8 +6,10 @@ from typing import (
 if TYPE_CHECKING:
     pass
 
+import re
+
 from configer import configer
-from constant.notion import PropertyType
+from constant.notion import PropertyType, PropertyValuePattern
 from helpers.notion import property
 from helpers.notion.api import (
     get_database_data,
@@ -33,7 +35,7 @@ def get_daily_activities() -> List[list]:
     """
     data = get_database_data(configer.notion.DATABASE_ID)
 
-    temp_daily_data: dict = {}
+    temp_daily_data: Dict[str, list] = {}
     for card in data["results"]:
         card_properties: Dict[str, dict] = card["properties"]
 
@@ -49,7 +51,8 @@ def get_daily_activities() -> List[list]:
         if cur_day not in temp_daily_data:
             temp_daily_data[cur_day] = []
         
-        temp_daily_data[cur_day].append(card_info)
+        if verify_activity_info(card_info):
+            temp_daily_data[cur_day].append(card_info)
 
     days: List[str] = list(temp_daily_data.keys())
     days.sort()
@@ -78,3 +81,20 @@ def sort_daily_activities(daily_activities: List[list]) -> List[list]:
         )
     
     return sorted_data
+
+def verify_activity_info(activity: dict) -> bool:
+    """ Check activity properties whether correct or not.
+
+    :param activity: one acitivity's properties
+
+    :return: is valid or not
+    """
+    for k, v in activity.items():
+        if k not in PropertyValuePattern.__members__:
+            continue
+
+        if re.fullmatch(PropertyValuePattern[k].value, v) is None:
+            print(k, v)
+            return False
+
+    return True

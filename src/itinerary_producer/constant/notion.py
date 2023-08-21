@@ -16,3 +16,10 @@ class PropertyType(Enum):
     end_at = "rich_text"
     start_at = "rich_text"
     type = "select"
+
+
+class PropertyValuePattern(Enum):
+    type = ".+"
+    date = "(\d+)-(\d+)-(\d+)"  # e.g. 2023-01-01
+    start_at = "(\d{2}:\d{2})"  # e.g. 15:30
+    end_at = "(\d{2}:\d{2})"  # e.g. 15:30
