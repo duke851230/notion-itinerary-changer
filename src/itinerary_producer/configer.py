@@ -12,6 +12,10 @@ from pydantic import BaseModel  # type: ignore
 
 
 def get_config_path() -> str:
+    """ Get absolute path of config file.
+
+    :return: absolute path of config file
+    """
     CONFIG_DIRECTORY_NAME: str = "config"
     CONFIG_FILE_NAME: str = "config.toml"
     
@@ -36,7 +40,7 @@ def read_toml_data(file_path: str) -> dict:
     return config_data
 
 def initialize_config_model(config_class: BaseModel, toml_keyword: str) -> BaseModel:
-    """ Get toml config by keyword, and set every setting value into class attributes.
+    """ Filter toml config by keyword, and set settings value into class attributes.
 
     :param config_class: the config model which must inherited from BaseModel
     :param toml_keyword: block name in toml file
