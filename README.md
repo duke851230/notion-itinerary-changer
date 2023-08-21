@@ -1,92 +1,46 @@
 # Itinerary Producer
 
 
+## 本程式的目的
+因為平常就會用 Notion 的 Board view 來排行程，單用來排行程或整理店家資訊是非常好用的。但它有個缺點就是對手機版介面支援不夠好，不是很方便觀看。  
+所以以前的我都會在把確定下來的行程填寫到 Excel 中並印出來，但這個工作蠻花時間的，而且一旦行程又有變動修改起來格外複雜，因此萌生了撰寫此程式的動機，讓我之後能輕鬆的產出行程表。
 
-## Getting started
 
-To make it easy for you to get started with GitLab, here's a list of recommended next steps.
+## 成果展示
+### 下圖為 Notion 的 Board view 中排好的行程
+用 notion 來排行程確實很方便，但如果出去玩時，要用手機來觀看就不是那麼方便了。
 
-Already a pro? Just edit this README.md and make it your own. Want to make it easy? [Use the template at the bottom](#editing-this-readme)!
+![notion_database](https://gitlab.com/duke-try-new-things/python/itinerary-producer/-/raw/dev/docs/pictures/notion_database.png?inline=false)
 
-## Add your files
+### 下圖為輸出的 Excel 行程表格式
+經過轉換的行程表，能以顏色區分行程的類型，並增加了時間軸，讓行程更一目了然，且 Excel 也可輕易的列印出來或轉換成 PDF。
 
-- [ ] [Create](https://docs.gitlab.com/ee/user/project/repository/web_editor.html#create-a-file) or [upload](https://docs.gitlab.com/ee/user/project/repository/web_editor.html#upload-a-file) files
-- [ ] [Add files using the command line](https://docs.gitlab.com/ee/gitlab-basics/add-file.html#add-a-file-using-the-command-line) or push an existing Git repository with the following command:
+![excel](https://gitlab.com/duke-try-new-things/python/itinerary-producer/-/raw/4c1b835021829a5497f6e7495352cf7feda5ece2/docs/pictures/excel.png?inline=false)
 
-```
-cd existing_repo
-git remote add origin https://gitlab.com/duke-try-new-things/python/itinerary-producer.git
-git branch -M main
-git push -uf origin main
-```
 
-## Integrate with your tools
+## 如何使用？
+一、參考別人的教學 https://shaoku.cc/productivity/notion-api-practice/ ，建立自己的 notion integration，並將其 share 到自己的 notion board view 行程表頁面
+- 行程表卡片必須至少有 Name, Date, Type, Start_at, End_at 欄位  
+![card](https://gitlab.com/duke-try-new-things/python/itinerary-producer/-/raw/dev/docs/pictures/activity_card.png?ref_type=heads&inline=false)
+- 能吃的 Type 目前只有以下這些  
+![type](https://gitlab.com/duke-try-new-things/python/itinerary-producer/-/raw/dev/docs/pictures/activity_type.png?ref_type=heads&inline=false)
+- 或是直接從我的 notion 下載範本即可（https://efficient-wound-e70.notion.site/5656c60dec224795a36c3658af2fdbcf?pvs=4）
 
-- [ ] [Set up project integrations](https://gitlab.com/duke-try-new-things/python/itinerary-producer/-/settings/integrations)
+二、先將專案 clone 到本地端
 
-## Collaborate with your team
+三、將 python 環境裝好，並將 requirements.txt 的套件裝上
 
-- [ ] [Invite team members and collaborators](https://docs.gitlab.com/ee/user/project/members/)
-- [ ] [Create a new merge request](https://docs.gitlab.com/ee/user/project/merge_requests/creating_merge_requests.html)
-- [ ] [Automatically close issues from merge requests](https://docs.gitlab.com/ee/user/project/issues/managing_issues.html#closing-issues-automatically)
-- [ ] [Enable merge request approvals](https://docs.gitlab.com/ee/user/project/merge_requests/approvals/)
-- [ ] [Set auto-merge](https://docs.gitlab.com/ee/user/project/merge_requests/merge_when_pipeline_succeeds.html)
+四、修改配置檔，將 config.toml.example 更名為 config.toml，並修改裡面的值
 
-## Test and Deploy
+![config](https://gitlab.com/duke-try-new-things/python/itinerary-producer/-/raw/dev/docs/pictures/config.png?ref_type=heads&inline=false)
+- TOKEN：為 notion integration 的 secret
+- DATABASE_ID：從 notion board view 的網址上能找到  
+![notion_url](https://gitlab.com/duke-try-new-things/python/itinerary-producer/-/raw/dev/docs/pictures/notion_url.png?ref_type=heads&inline=false)
+- EXCEL_BASIC_DIR：產出的 Excel 要放在哪
+- SCHEDULE_TIMELINE_START_AT：Excel 行程表最左邊時間軸的起始時間
+- SCHEDULE_TIMELINE_END_AT：Excel 行程表最左邊時間軸的結束時間
+- SCHEDULE_TIMELINE_INTERVAL：Excel 行程表最左邊時間軸的時間跨度（單位：分鐘）
+- MINIMAL_INTERVAL：Excel 行程時間分割的最小粒度（單位：分鐘），若設為 10 分鐘，notion board view 中設置的時間最小單位就只能以 10 分鐘來填寫  
+![time_restriction](https://gitlab.com/duke-try-new-things/python/itinerary-producer/-/raw/dev/docs/pictures/time.png?ref_type=heads&inline=false)
 
-Use the built-in continuous integration in GitLab.
-
-- [ ] [Get started with GitLab CI/CD](https://docs.gitlab.com/ee/ci/quick_start/index.html)
-- [ ] [Analyze your code for known vulnerabilities with Static Application Security Testing(SAST)](https://docs.gitlab.com/ee/user/application_security/sast/)
-- [ ] [Deploy to Kubernetes, Amazon EC2, or Amazon ECS using Auto Deploy](https://docs.gitlab.com/ee/topics/autodevops/requirements.html)
-- [ ] [Use pull-based deployments for improved Kubernetes management](https://docs.gitlab.com/ee/user/clusters/agent/)
-- [ ] [Set up protected environments](https://docs.gitlab.com/ee/ci/environments/protected_environments.html)
-
-***
-
-# Editing this README
-
-When you're ready to make this README your own, just edit this file and use the handy template below (or feel free to structure it however you want - this is just a starting point!). Thank you to [makeareadme.com](https://www.makeareadme.com/) for this template.
-
-## Suggestions for a good README
-Every project is different, so consider which of these sections apply to yours. The sections used in the template are suggestions for most open source projects. Also keep in mind that while a README can be too long and detailed, too long is better than too short. If you think your README is too long, consider utilizing another form of documentation rather than cutting out information.
-
-## Name
-Choose a self-explaining name for your project.
-
-## Description
-Let people know what your project can do specifically. Provide context and add a link to any reference visitors might be unfamiliar with. A list of Features or a Background subsection can also be added here. If there are alternatives to your project, this is a good place to list differentiating factors.
-
-## Badges
-On some READMEs, you may see small images that convey metadata, such as whether or not all the tests are passing for the project. You can use Shields to add some to your README. Many services also have instructions for adding a badge.
-
-## Visuals
-Depending on what you are making, it can be a good idea to include screenshots or even a video (you'll frequently see GIFs rather than actual videos). Tools like ttygif can help, but check out Asciinema for a more sophisticated method.
-
-## Installation
-Within a particular ecosystem, there may be a common way of installing things, such as using Yarn, NuGet, or Homebrew. However, consider the possibility that whoever is reading your README is a novice and would like more guidance. Listing specific steps helps remove ambiguity and gets people to using your project as quickly as possible. If it only runs in a specific context like a particular programming language version or operating system or has dependencies that have to be installed manually, also add a Requirements subsection.
-
-## Usage
-Use examples liberally, and show the expected output if you can. It's helpful to have inline the smallest example of usage that you can demonstrate, while providing links to more sophisticated examples if they are too long to reasonably include in the README.
-
-## Support
-Tell people where they can go to for help. It can be any combination of an issue tracker, a chat room, an email address, etc.
-
-## Roadmap
-If you have ideas for releases in the future, it is a good idea to list them in the README.
-
-## Contributing
-State if you are open to contributions and what your requirements are for accepting them.
-
-For people who want to make changes to your project, it's helpful to have some documentation on how to get started. Perhaps there is a script that they should run or some environment variables that they need to set. Make these steps explicit. These instructions could also be useful to your future self.
-
-You can also document commands to lint the code or run tests. These steps help to ensure high code quality and reduce the likelihood that the changes inadvertently break something. Having instructions for running tests is especially helpful if it requires external setup, such as starting a Selenium server for testing in a browser.
-
-## Authors and acknowledgment
-Show your appreciation to those who have contributed to the project.
-
-## License
-For open source projects, say how it is licensed.
-
-## Project status
-If you have run out of energy or time for your project, put a note at the top of the README saying that development has slowed down or stopped completely. Someone may choose to fork your project or volunteer to step in as a maintainer or owner, allowing your project to keep going. You can also make an explicit request for maintainers.
+五、執行程式，執行 produce_schedule.sh（或把裡面的指令複製出來執行）
