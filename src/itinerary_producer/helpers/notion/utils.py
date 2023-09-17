@@ -45,7 +45,11 @@ def get_daily_activities() -> List[list]:
             if lower_field_name in PropertyType.__members__:
                 property_type: str = PropertyType[lower_field_name].value
                 method: Callable = getattr(property, f"get_{property_type}")
-                card_info[lower_field_name] = method(info)
+                try: 
+                    card_info[lower_field_name] = method(info)
+                except Exception as e:
+                    print(card_properties)
+                    raise e
         
         cur_day: str = card_info[PropertyType.date.name]
         if cur_day not in temp_daily_data:

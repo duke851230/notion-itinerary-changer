@@ -28,5 +28,6 @@ def get_database_data(database_id: str) -> dict:
 
     response = requests.request('POST', url, headers=header_payload)
     data: dict = response.json()
+    # print(f"data: {data}")
 
     return data

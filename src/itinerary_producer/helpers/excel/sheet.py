@@ -88,18 +88,23 @@ def insert_activities_to_sheet(
 
             sheet.merge_cells(f"{current_column}{start_row_index}:{current_column}{end_row_index}")
 
-            activity_cell: Union[MergedCell, Any, Cell] = sheet.cell(
-                row=start_row_index,
-                column=column_index_from_string(current_column),
-                value=get_type_display_text(
-                    used_rows=end_row_index-start_row_index+1,
-                    type_name=activity["type"],
-                    activity_name=activity["name"],
-                    start_time=start_time_str,
-                    end_time=end_time_str,
-                    note=activity["note"]
+            try:
+                activity_cell: Union[MergedCell, Any, Cell] = sheet.cell(
+                    row=start_row_index,
+                    column=column_index_from_string(current_column),
+                    value=get_type_display_text(
+                        used_rows=end_row_index-start_row_index+1,
+                        type_name=activity["type"],
+                        activity_name=activity["name"],
+                        start_time=start_time_str,
+                        end_time=end_time_str,
+                        note=activity["note"]
+                    )
                 )
-            )
+            except Exception as e:
+                print(f"activity: {activity}")
+                raise e
+                
             set_general_format_of_cell(activity_cell, font_size=10, fill_color=get_type_color(activity["type"]))
             if isinstance(activity_cell, Cell):
                 auto_adjust_cell_width(sheet, activity_cell)
