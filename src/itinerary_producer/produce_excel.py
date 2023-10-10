@@ -23,6 +23,9 @@ from helpers.excel.utils import (
 from helpers.notion.utils import (
     get_daily_activities,
 )
+from helpers.check_data import (
+    check_activities_time,
+)
 
 
 FILE_PATH: str = os.path.join(
@@ -57,9 +60,12 @@ def produce_schedule_excel(file_path: str) -> None:
         merge_row_num=row_number_in_one_timeline_interval
     )
 
+    activities: List[list] = get_daily_activities()
+    check_activities_time(activities, configer.excel.SCHEDULE_TIMELINE_START_AT, configer.excel.SCHEDULE_TIMELINE_END_AT)
+
     insert_activities_to_sheet(
         sheet=sheet,
-        activities=get_daily_activities(),
+        activities=activities,
         timeline=end_timeline,
         start_column="B"
     )
