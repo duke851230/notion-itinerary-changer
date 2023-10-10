@@ -8,6 +8,7 @@ if TYPE_CHECKING:
 
 from enum import Enum
 
+ACTIVITY_REQUIRED_PROPERTIES: list = ["name", "date", "start_at", "end_at", "type"]
 
 class PropertyType(Enum):
     name = "title"

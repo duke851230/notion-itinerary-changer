@@ -25,6 +25,7 @@ from helpers.notion.utils import (
 )
 from helpers.check_data import (
     check_activities_time,
+    check_activities_required_fields,
 )
 
 
@@ -62,6 +63,7 @@ def produce_schedule_excel(file_path: str) -> None:
 
     activities: List[list] = get_daily_activities()
     check_activities_time(activities, configer.excel.SCHEDULE_TIMELINE_START_AT, configer.excel.SCHEDULE_TIMELINE_END_AT)
+    check_activities_required_fields(activities)
 
     insert_activities_to_sheet(
         sheet=sheet,
