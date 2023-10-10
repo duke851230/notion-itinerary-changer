@@ -33,6 +33,19 @@ def initialize_sheet(sheet: Worksheet, merge_row_num: int) -> None:
     sheet.row_dimensions[1].height = 35
 
 def set_timeline_in_sheet(sheet: Worksheet, column: str, timeline_data: List[dict], merge_row_num: int) -> None:
+    """ Set schedule's timeline in the excel sheet.
+
+    因時間軸分成「人看的」與「電腦看的」兩種。「電腦看的」為較小粒度的時間（例如 5 或 10 分鐘）；「人看的」則像是 30 或 60 分鐘。
+    我們的 timeline_data 就是用來給「電腦看的」。要顯示給人看時，需將多筆小粒度時間結合在一起，而 merge_row_num 就是用來表示要將幾筆合併。
+    例如：「人看的」為 60 分鐘，「電腦看的」為 10 分鐘，則 merge_row_num 就為 6。
+
+    :param sheet: current sheet  
+    :param column: the column which is used to write timeline  
+    :param timeline_data: has two dict, first is start timeline, the second is end timeline  
+    :param merge_row_num: how many timeline item need to merge into one period
+
+    :return: None
+    """
     sheet.column_dimensions[column].width = 12
     
     start_timeline, end_timeline = timeline_data
