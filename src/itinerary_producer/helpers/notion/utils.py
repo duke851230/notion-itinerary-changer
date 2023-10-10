@@ -33,7 +33,7 @@ def get_daily_activities() -> List[list]:
         ...
     ]
     """
-    data = get_database_data(configer.notion.DATABASE_ID)
+    data: dict = get_database_data(configer.notion.DATABASE_ID)
 
     temp_daily_data: Dict[str, list] = {}
     for card in data["results"]:
@@ -48,15 +48,15 @@ def get_daily_activities() -> List[list]:
                 try: 
                     card_info[lower_field_name] = method(info)
                 except Exception as e:
-                    print(card_properties)
+                    print(f"Error in get notion database card's properties. Current card: {card_properties}, current field: {field_name}")
                     raise e
         
         cur_day: str = card_info[PropertyType.date.name]
         if cur_day not in temp_daily_data:
             temp_daily_data[cur_day] = []
         
-        if verify_activity_info(card_info):
-            temp_daily_data[cur_day].append(card_info)
+        verify_activity_info(card_info)
+        temp_daily_data[cur_day].append(card_info)
 
     days: List[str] = list(temp_daily_data.keys())
     days.sort()
@@ -86,19 +86,17 @@ def sort_daily_activities(daily_activities: List[list]) -> List[list]:
     
     return sorted_data
 
-def verify_activity_info(activity: dict) -> bool:
+def verify_activity_info(activity: dict) -> None:
     """ Check activity properties whether correct or not.
 
     :param activity: one acitivity's properties
 
-    :return: is valid or not
+    :return: None
     """
     for k, v in activity.items():
         if k not in PropertyValuePattern.__members__:
             continue
 
         if re.fullmatch(PropertyValuePattern[k].value, v) is None:
-            print(k, v)
-            return False
-
-    return True
+            print(f"Activity: {activity}. the {k} is not valid.")
+            raise Exception(f"The {k} is not valid.")
