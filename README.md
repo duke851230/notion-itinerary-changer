@@ -10,20 +10,20 @@
 ### 下圖為 Notion 的 Board view 中排好的行程
 用 notion 來排行程確實很方便，但如果出去玩時，要用手機來觀看就不是那麼方便了。
 
-![notion_database](https://gitlab.com/duke-try-new-things/python/itinerary-producer/-/raw/dev/docs/pictures/notion_database.png?inline=false)
+![notion_database](https://github.com/duke851230/notion-itinerary-changer/blob/main/docs/pictures/notion_database.png)
 
 ### 下圖為輸出的 Excel 行程表格式
 經過轉換的行程表，能以顏色區分行程的類型，並增加了時間軸，讓行程更一目了然，且 Excel 也可輕易的列印出來或轉換成 PDF。
 
-![excel](https://gitlab.com/duke-try-new-things/python/itinerary-producer/-/raw/4c1b835021829a5497f6e7495352cf7feda5ece2/docs/pictures/excel.png?inline=false)
+![excel](https://github.com/duke851230/notion-itinerary-changer/blob/main/docs/pictures/excel.png)
 
 
 ## 如何使用？
 一、參考別人的教學 https://shaoku.cc/productivity/notion-api-practice/ ，建立自己的 notion integration，並將其 share 到自己的 notion board view 行程表頁面
 - 行程表卡片必須至少有 Name, Date, Type, Start_at, End_at 欄位  
-![card](https://gitlab.com/duke-try-new-things/python/itinerary-producer/-/raw/dev/docs/pictures/activity_card.png?ref_type=heads&inline=false)
+![activity_card](https://github.com/duke851230/notion-itinerary-changer/blob/main/docs/pictures/activity_card.png)
 - 能吃的 Type 目前只有以下這些  
-![type](https://gitlab.com/duke-try-new-things/python/itinerary-producer/-/raw/dev/docs/pictures/activity_type.png?ref_type=heads&inline=false)
+![activity_type](https://github.com/duke851230/notion-itinerary-changer/blob/main/docs/pictures/activity_type.png)
 - 或是直接從我的 notion 下載範本即可（https://efficient-wound-e70.notion.site/5656c60dec224795a36c3658af2fdbcf?pvs=4）
 
 二、先將專案 clone 到本地端
@@ -32,15 +32,15 @@
 
 四、修改配置檔，將 config.toml.example 更名為 config.toml，並修改裡面的值
 
-![config](https://gitlab.com/duke-try-new-things/python/itinerary-producer/-/raw/dev/docs/pictures/config.png?ref_type=heads&inline=false)
+![config](https://github.com/duke851230/notion-itinerary-changer/blob/main/docs/pictures/config.png)
 - TOKEN：為 notion integration 的 secret
 - DATABASE_ID：從 notion board view 的網址上能找到  
-![notion_url](https://gitlab.com/duke-try-new-things/python/itinerary-producer/-/raw/dev/docs/pictures/notion_url.png?ref_type=heads&inline=false)
+![notion_url](https://github.com/duke851230/notion-itinerary-changer/blob/main/docs/pictures/notion_url.png)
 - EXCEL_BASIC_DIR：產出的 Excel 要放在哪
 - SCHEDULE_TIMELINE_START_AT：Excel 行程表最左邊時間軸的起始時間
 - SCHEDULE_TIMELINE_END_AT：Excel 行程表最左邊時間軸的結束時間
 - SCHEDULE_TIMELINE_INTERVAL：Excel 行程表最左邊時間軸的時間跨度（單位：分鐘）
 - MINIMAL_INTERVAL：Excel 行程時間分割的最小粒度（單位：分鐘），若設為 10 分鐘，notion board view 中設置的時間最小單位就只能以 10 分鐘來填寫  
-![time_restriction](https://gitlab.com/duke-try-new-things/python/itinerary-producer/-/raw/dev/docs/pictures/time.png?ref_type=heads&inline=false)
+![time_restriction](https://github.com/duke851230/notion-itinerary-changer/blob/main/docs/pictures/time.png)
 
 五、執行程式，執行 produce_schedule.sh（或把裡面的指令複製出來執行）
