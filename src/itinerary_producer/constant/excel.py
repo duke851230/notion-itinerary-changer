@@ -21,25 +21,35 @@ class ColorMap(Enum):
     dark_gray = "00969696"
     white = "00FFFFFF"
 
+class ActivityType(Enum):
+    RESTAURANT = "餐廳"
+    SNACK = "點心"
+    ACCOMMODATION = "住宿"
+    ATTRACTION = "景點"
+    TRANSPORTATION = "交通"
+    PACKAGE_TOUR = "套裝行程"
+    ERRANDS = "雜務"
+    OTHERS = "其他"
+
 # ACTIVITY_DISPLAY_TEXT_WITH_TYPE_MAPPING 與 BACKGROUND_COLOR_WITH_TYPE_MAPPING 需要一一對應
 ACTIVITY_DISPLAY_TEXT_WITH_TYPE_MAPPING: Dict[str, str] = {
-    "餐廳": "{activity_name}\n{start_time}~{end_time}",
-    "點心": "{activity_name}\n{start_time}~{end_time}",
-    "住宿": "{activity_name}\n{start_time}~{end_time}",
-    "景點": "{activity_name}\n{start_time}~{end_time}",
-    "交通": "{activity_name}\n{start_time}~{end_time}",
-    "套裝行程": "{activity_name}\n{start_time}~{end_time}",
-    "雜務": "{activity_name}({start_time}~{end_time})",
-    "其他": "{activity_name}({start_time}~{end_time})"
+    ActivityType.RESTAURANT.value: "{activity_name}\n{start_time}~{end_time}",
+    ActivityType.SNACK.value: "{activity_name}\n{start_time}~{end_time}",
+    ActivityType.ACCOMMODATION.value: "{activity_name}\n{start_time}~{end_time}",
+    ActivityType.ATTRACTION.value: "{activity_name}\n{start_time}~{end_time}",
+    ActivityType.TRANSPORTATION.value: "{activity_name}\n{start_time}~{end_time}",
+    ActivityType.PACKAGE_TOUR.value: "{activity_name}\n{start_time}~{end_time}",
+    ActivityType.ERRANDS.value: "{activity_name}({start_time}~{end_time})",
+    ActivityType.OTHERS.value: "{activity_name}({start_time}~{end_time})"
 }
 
 BACKGROUND_COLOR_WITH_TYPE_MAPPING: Dict[str, str] = {
-    "餐廳": ColorMap.blue.value,
-    "景點": ColorMap.green.value,
-    "交通": ColorMap.orange.value,
-    "雜務": ColorMap.gray.value,
-    "套裝行程": ColorMap.purple.value,
-    "點心": ColorMap.pink.value,
-    "住宿": ColorMap.yellow.value,
-    "其他": ColorMap.beige.value
+    ActivityType.RESTAURANT.value: ColorMap.blue.value,
+    ActivityType.ATTRACTION.value: ColorMap.green.value,
+    ActivityType.TRANSPORTATION.value: ColorMap.orange.value,
+    ActivityType.ERRANDS.value: ColorMap.gray.value,
+    ActivityType.PACKAGE_TOUR.value: ColorMap.purple.value,
+    ActivityType.SNACK.value: ColorMap.pink.value,
+    ActivityType.ACCOMMODATION.value: ColorMap.yellow.value,
+    ActivityType.OTHERS.value: ColorMap.beige.value
 }

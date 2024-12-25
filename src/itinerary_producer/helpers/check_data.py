@@ -7,7 +7,9 @@ from constant.notion import (
     ACTIVITY_REQUIRED_PROPERTIES,
     PropertyValuePattern,
 )
-from constant.excel import ACTIVITY_DISPLAY_TEXT_WITH_TYPE_MAPPING
+from constant.excel import (
+    ActivityType,
+)
 
 
 def check_activities_time(activities: List[list], timeline_start_limit: str, timeline_end_limit: str) -> None:
@@ -27,7 +29,7 @@ def check_activities_time(activities: List[list], timeline_start_limit: str, tim
             if not (timeline_start_limit < activity["end_at"] <= timeline_end_limit):
                 print(f"Activity: {activity}. Its end_at is not in {timeline_start_limit} to {timeline_end_limit}.")
                 raise Exception("Activity end_at is not vaild.")
-            
+
 
 def check_activities_required_fields(activities: List[list]) -> None:
     """ Check activities required fields is correct or not.
@@ -57,7 +59,7 @@ def check_options_in_activities_data_is_vaild(activities: List[list]) -> None:
 
     :return: None
     """
-    avalible_activity_types: list = ACTIVITY_DISPLAY_TEXT_WITH_TYPE_MAPPING.keys()
+    avalible_activity_types = [activity_type.value for activity_type in ActivityType]
     for daily_activities in activities:
         for activity in daily_activities:
             if activity["type"] not in avalible_activity_types:
