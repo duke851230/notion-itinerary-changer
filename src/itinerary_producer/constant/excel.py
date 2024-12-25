@@ -21,6 +21,7 @@ class ColorMap(Enum):
     dark_gray = "00969696"
     white = "00FFFFFF"
 
+# ACTIVITY_DISPLAY_TEXT_WITH_TYPE_MAPPING 與 BACKGROUND_COLOR_WITH_TYPE_MAPPING 需要一一對應
 ACTIVITY_DISPLAY_TEXT_WITH_TYPE_MAPPING: Dict[str, str] = {
     "餐廳": "{activity_name}\n{start_time}~{end_time}",
     "點心": "{activity_name}\n{start_time}~{end_time}",
