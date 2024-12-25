@@ -28,6 +28,15 @@ from constant.excel import ColorMap
 
 
 def initialize_sheet(sheet: Worksheet, merge_row_num: int) -> None:
+    """ Initialize excel sheet.
+
+    這邊 defaultRowHeight 會依據一個時間段內要顯示的行數（merge_row_num）來設定行高。
+
+    :param sheet: current sheet  
+    :param merge_row_num: how many timeline item need to merge into one period
+
+    :return: None
+    """
     sheet.sheet_format.defaultColWidth = 20
     sheet.sheet_format.defaultRowHeight = 60 // merge_row_num
     sheet.row_dimensions[1].height = 35
@@ -35,9 +44,10 @@ def initialize_sheet(sheet: Worksheet, merge_row_num: int) -> None:
 def set_timeline_in_sheet(sheet: Worksheet, column: str, timeline_data: List[dict], merge_row_num: int) -> None:
     """ Set schedule's timeline in the excel sheet.
 
-    因時間軸分成「人看的」與「電腦看的」兩種。「電腦看的」為較小粒度的時間（例如 5 或 10 分鐘）；「人看的」則像是 30 或 60 分鐘。
-    我們的 timeline_data 就是用來給「電腦看的」。要顯示給人看時，需將多筆小粒度時間結合在一起，而 merge_row_num 就是用來表示要將幾筆合併。
-    例如：「人看的」為 60 分鐘，「電腦看的」為 10 分鐘，則 merge_row_num 就為 6。
+    - 因時間軸分成「人看的」與「電腦看的」兩種。「電腦看的」為較小粒度的時間（例如 5 或 10 分鐘）；「人看的」則像是 30 或 60 分鐘。
+      我們的 timeline_data 就是用來給「電腦看的」。要顯示給人看時，需將多筆小粒度時間結合在一起，而 merge_row_num 就是用來表示要將幾筆合併。
+      例如：「人看的」為 60 分鐘，「電腦看的」為 10 分鐘，則 merge_row_num 就為 6。
+    - 如果當迴圈結束時還有幾筆時間沒有被處理到的話，就把剩下的時間合併成一格
 
     :param sheet: current sheet  
     :param column: the column which is used to write timeline  
@@ -60,6 +70,17 @@ def set_timeline_in_sheet(sheet: Worksheet, column: str, timeline_data: List[dic
         
         sheet.merge_cells(f"{column}{need_merge_rows[0]['row_id']}:{column}{need_merge_rows[-1]['row_id']}")
         
+        c: Union[MergedCell, Any, Cell] = sheet.cell(
+            row = need_merge_rows[0]['row_id'],
+            column = column_index_from_string(column),
+            value = f"{start_timeline[need_merge_rows[0]['row_id']]}~{need_merge_rows[-1]['time']}"
+        )
+        set_general_format_of_cell(c, font_size=10, fill_color=ColorMap.gray.value)
+        need_merge_rows.clear()
+
+    # 如果當迴圈結束時還有幾筆時間沒有被處理到的話，就把剩下的時間合併成一格
+    if need_merge_rows:
+        sheet.merge_cells(f"{column}{need_merge_rows[0]['row_id']}:{column}{need_merge_rows[-1]['row_id']}")
         c: Union[MergedCell, Any, Cell] = sheet.cell(
             row = need_merge_rows[0]['row_id'],
             column = column_index_from_string(column),

@@ -38,8 +38,10 @@ def produce_schedule_excel(file_path: str) -> None:
     wb: Workbook = Workbook()
     sheet: Worksheet = wb.active
 
+    if configer.excel.SCHEDULE_TIMELINE_INTERVAL % configer.excel.MINIMAL_INTERVAL != 0:
+        raise ValueError("SCHEDULE_TIMELINE_INTERVAL 必須是 MINIMAL_INTERVAL 的整數倍")
     row_number_in_one_timeline_interval: int = configer.excel.SCHEDULE_TIMELINE_INTERVAL // configer.excel.MINIMAL_INTERVAL
-    
+
     initialize_sheet(
         sheet=sheet,
         merge_row_num=row_number_in_one_timeline_interval

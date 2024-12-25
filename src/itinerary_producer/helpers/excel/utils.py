@@ -33,7 +33,7 @@ def get_timeline_data(
     :param start_at: timeline start time
     :param end_at: timeline end time
     :param start_row_number: it be used to calculate every moment's row id
-    :param time_interval: timeline interval
+    :param time_interval: timeline interval (MINIMAL_INTERVAL)
     
     :return: (start timeline, end timeline)
 
