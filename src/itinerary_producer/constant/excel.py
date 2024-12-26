@@ -1,7 +1,6 @@
 from __future__ import annotations
-from typing import (
-    TYPE_CHECKING, Dict,
-)
+
+from typing import TYPE_CHECKING, Dict
 
 if TYPE_CHECKING:
     pass
@@ -21,6 +20,7 @@ class ColorMap(Enum):
     dark_gray = "00969696"
     white = "00FFFFFF"
 
+
 class ActivityType(Enum):
     RESTAURANT = "餐廳"
     SNACK = "點心"
@@ -31,6 +31,7 @@ class ActivityType(Enum):
     ERRANDS = "雜務"
     OTHERS = "其他"
 
+
 # ACTIVITY_DISPLAY_TEXT_WITH_TYPE_MAPPING 與 BACKGROUND_COLOR_WITH_TYPE_MAPPING 需要一一對應
 ACTIVITY_DISPLAY_TEXT_WITH_TYPE_MAPPING: Dict[str, str] = {
     ActivityType.RESTAURANT.value: "{activity_name}\n{start_time}~{end_time}",
@@ -40,7 +41,7 @@ ACTIVITY_DISPLAY_TEXT_WITH_TYPE_MAPPING: Dict[str, str] = {
     ActivityType.TRANSPORTATION.value: "{activity_name}\n{start_time}~{end_time}",
     ActivityType.PACKAGE_TOUR.value: "{activity_name}\n{start_time}~{end_time}",
     ActivityType.ERRANDS.value: "{activity_name}({start_time}~{end_time})",
-    ActivityType.OTHERS.value: "{activity_name}({start_time}~{end_time})"
+    ActivityType.OTHERS.value: "{activity_name}({start_time}~{end_time})",
 }
 
 BACKGROUND_COLOR_WITH_TYPE_MAPPING: Dict[str, str] = {
@@ -51,5 +52,5 @@ BACKGROUND_COLOR_WITH_TYPE_MAPPING: Dict[str, str] = {
     ActivityType.PACKAGE_TOUR.value: ColorMap.purple.value,
     ActivityType.SNACK.value: ColorMap.pink.value,
     ActivityType.ACCOMMODATION.value: ColorMap.yellow.value,
-    ActivityType.OTHERS.value: ColorMap.beige.value
+    ActivityType.OTHERS.value: ColorMap.beige.value,
 }

@@ -5,7 +5,7 @@ repos:
     rev: 24.8.0
     hooks:
       - id: black
-        files: ^backend/src/.*\.py$
+        files: ^src/.*\.py$
         args:
           - --line-length=100  
           - --skip-string-normalization  # 保留現有的字串格式（如單引號、雙引號）
@@ -13,7 +13,7 @@ repos:
     rev: 7.1.0
     hooks:
       - id: flake8
-        files: ^backend/src/.*\.py$
+        files: ^src/.*\.py$
         args:
           - --ignore=E203,E501,E731,W503,W504
           - --max-line-length=100
@@ -21,11 +21,11 @@ repos:
     rev: 5.13.2
     hooks:
       - id: isort
-        files: ^backend/src/.*\.py$
+        files: ^src/.*\.py$
         exclude: migrations/
         args:
           - --line-length=100
-          - --src=backend/
+          - --src=src/
           - --profile=black
   - repo: https://github.com/PyCQA/bandit
     rev: 1.7.9
@@ -37,5 +37,5 @@ repos:
           - -x
           - tests
           - --skip=B101,B311 # B101: 允許使用 assert, B311: 忽略 pseudo random generator 的問題。
-        files: ^backend/src/.*\.py$
+        files: ^src/.*\.py$
         exclude: migrations/
